@@ -14,9 +14,9 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 bcrypt = Bcrypt(app)
-# from controllers import stocks
+from controllers import stocks
 
-# app.register_blueprint(stocks.router, url_prefix="/api")
+app.register_blueprint(stocks.router, url_prefix="/api")
 
 # ! Hello world flask app to start you off. Replace this with blueprints and routers and so on.
 @app.route("/api")
