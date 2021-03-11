@@ -12,4 +12,4 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
 
     password = fields.String(required=True)
     
-    # trades = fields.Nested('TradeSchema', many=True)
+    trades = fields.Nested('SimpleTradeSchema', many=True)

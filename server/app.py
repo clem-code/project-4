@@ -14,6 +14,7 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 bcrypt = Bcrypt(app)
+
 from controllers import users, trades
 
 app.register_blueprint(trades.router, url_prefix="/api")
