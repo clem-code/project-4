@@ -5,12 +5,10 @@ from models.user import User
 from serializers.trade import TradeSchema
 
 from decorators.secure_route import secure_route
-# from serializers.stock import StockSchema
 
 trade_schema = TradeSchema()
 from marshmallow.exceptions import ValidationError
 
-# stock_schema = StockSchema()
 
 router = Blueprint(__name__, "trades")
 

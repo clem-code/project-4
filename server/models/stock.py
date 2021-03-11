@@ -6,5 +6,5 @@ class Stock(db.Model, BaseModel):
 
     __tablename__ = "stocks"
 
-    name = db.Column(db.String(100), nullable=False, unique=True)
-    symbol = db.Column(db.String(8), nullable=True)
+    name = db.Column(db.String(100), nullable=False)
+    symbol = db.Column(db.String(100), nullable=True)
