@@ -8,3 +8,4 @@ class Stock(db.Model, BaseModel):
 
     name = db.Column(db.String(100), nullable=False)
     symbol = db.Column(db.String(100), nullable=True)
+    type_of = db.Column(db.String(100), nullable=True)
