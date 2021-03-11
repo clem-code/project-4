@@ -3,13 +3,14 @@ from models.stock import Stock
 from models.trade import Trade
 from models.user import User
 from serializers.trade import TradeSchema
-# from decorators.secure_route import secure_route
-from serializers.stock import StockSchema
+
+from decorators.secure_route import secure_route
+# from serializers.stock import StockSchema
 
 trade_schema = TradeSchema()
 from marshmallow.exceptions import ValidationError
 
-stock_schema = StockSchema()
+# stock_schema = StockSchema()
 
 router = Blueprint(__name__, "trades")
 
@@ -20,20 +21,24 @@ def get_trades():
 
     return trade_schema.jsonify(trades, many=True), 200
 
+
 @router.route("/trades", methods=["GET"])
+@secure_route
 def get_my_trades():
     trades = Trade.query.all()
 
-    my_trades = list(filter(lambda trade:trade.user == g.current_user, trades))
+    my_trades = list(filter(lambda trade: trade.user == g.current_user, trades))
 
     return trade_schema.jsonify(my_trades, many=True), 200
 
+
 @router.route("/trades/<int:trade_id>", methods=["GET"])
+@secure_route
 def get_single_trade(trade_id):
     trade = Trade.query.get(trade_id)
 
     if trade.user != g.current_user:
-      return {'errors': 'This is not your trade!'}, 402
+        return {"errors": "This is not your trade!"}, 402
 
     if not trade:
         return {"message": "Trade not found"}, 404
@@ -42,7 +47,7 @@ def get_single_trade(trade_id):
 
 
 @router.route("/trades", methods=["POST"])
-# @secure_route
+@secure_route
 def make_trade():
     trade_dictionary = request.json
 
