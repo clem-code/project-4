@@ -31,7 +31,7 @@ def login():
         return {"message": "No user found for this email"}
 
     if not user.validate_password(request.json["password"]):
-        return {"message": "You are not authorized"}, 402
+        return {"message": "You are not authorized"}, 401
 
     token = user.generate_token()
 
