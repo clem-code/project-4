@@ -2,34 +2,42 @@ import React, { useEffect } from 'react'
 import { BrowserRouter, Switch, Link, Route } from 'react-router-dom'
 import './styles/style.scss'
 import axios from 'axios'
+import { ChakraProvider, Box } from '@chakra-ui/react'
+// Components
+import Register from './components/Register'
+import Login from './components/Login'
+import Home from './components/Home'
+import Sidebar from './components/Sidebar'
+import Portfolio from './components/Portfolio'
+import Trading from './components/Trading'
+import Asset from './components/Asset'
+import Research from './components/Research'
+import About from './components/About'
+import Footer from './components/Footer'
+
+
 
 // ! Some starter code for your frontend, change this
 // ! however you like.
 const App = () => (
-  <BrowserRouter>
-    <Switch>
-      <Route exact path="/" component={Home} />
-      <Route exact path="/test/backend" component={TestBackend} />
-    </Switch>
-  </BrowserRouter>
+  <ChakraProvider>
+    <BrowserRouter>
+      <Sidebar />
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/register" component={Register} />
+        <Route exact path="/login" component={Login} />
+        <Route exact path="/portfolio" component={Portfolio} />
+        <Route exact path="/research" component={Research} />
+        <Route exact path="/trading" component={Trading} />
+        <Route exact path="/asset/:assetId" component={Asset} />
+        <Route exact path="/about" component={About} />
+      </Switch>
+      <Footer />
+    </BrowserRouter>
+  </ChakraProvider>
 )
 
-const Home = () => <Link to={'/test/backend'}>
-  Go to /hello/world page.
-</Link>
 
-// ! Just a little component to test that you can talk to your flask server, check if it
-// ! works in network tab.
-const TestBackend = () => {
-  useEffect(() => {
-    // ? This is going to try localhost:5000/api
-    axios.get('/api')
-      .then(({ data }) => console.log(data))
-  }, [])
-
-  return <p>
-    Hello World
-  </p>
-}
 
 export default App
