@@ -44,6 +44,22 @@ def get_user_profile():
     return user_schema.jsonify(g.current_user)
 
 
+@router.route("/user/<int:user_id>", methods=["DELETE"])
+@secure_route
+def delete_user_profile(user_id):
+    user = User.query.get(user_id)
+    if user != g.current_user:
+        return {"errors": "Unauthorized"}, 402
+    user.remove()
+    return {"message": "User successfully deleted"}, 200
+
+
+@router.route("/users", methods=["GET"])
+@secure_route
+def get_all_users():
+    users = User.query.all()
+    return user_schema.jsonify(users, many=True), 200
+
 
 @router.route("/<int:user_id>/wallet", methods=["PUT"])
 @secure_route
