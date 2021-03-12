@@ -14,10 +14,6 @@ import Research from './components/Research'
 import About from './components/About'
 import Footer from './components/Footer'
 
-
-
-// ! Some starter code for your frontend, change this
-// ! however you like.
 const App = () => (
   <BrowserRouter>
     <Sidebar />
@@ -38,3 +34,5 @@ const App = () => (
 
 
 export default App
+
+//* this is a comment

@@ -8,7 +8,7 @@ class TradeSchema(ma.SQLAlchemyAutoSchema):
         model = Trade
         load_instance = True
 
-    # user = fields.Nested("UserSchema")
+    # user = fields.Nested('UserSchema')
     # comments = fields.Nested("CommentSchema", many=True)
     # ingredients = fields.Nested('IngredientSchema', many=True)
 
