@@ -14,9 +14,11 @@ const App = () => (
   </BrowserRouter>
 )
 
-const Home = () => <Link to={'/test/backend'}>
+const Home = () => <div>
+  <Link to={'/test/backend'}>
   Go to /hello/world page.
 </Link>
+  </div>
 
 // ! Just a little component to test that you can talk to your flask server, check if it
 // ! works in network tab.
