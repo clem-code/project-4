@@ -27,17 +27,6 @@ def get_single_stock(stock_id):
     return stock_schema.jsonify(stock), 200
 
 
-@router.route("/<int:user_id>/favourites", methods=["GET"])
-@secure_route
-def get_user_favourites(user_id):
-    user = User.query.get(user_id)
-    stocks = Stock.query.all()
-    print(stocks)
-    favourites = list(filter(lambda stock: stock.id == g.current_user, stocks))
-
-    return stock_schema.jsonify(favourites)
-
-
 # ! POST A User Favourite TO A Stock
 @router.route("/stocks/<int:stock_id>/favourites/<int:user_id>", methods=["POST"])
 @secure_route
