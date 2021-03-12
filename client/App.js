@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { BrowserRouter, Switch, Link, Route } from 'react-router-dom'
 import './styles/style.scss'
 import axios from 'axios'
-import { ChakraProvider, Box } from '@chakra-ui/react'
 // Components
 import Register from './components/Register'
 import Login from './components/Login'
@@ -16,7 +15,6 @@ import About from './components/About'
 import Footer from './components/Footer'
 
 const App = () => (
-  <ChakraProvider>
     <BrowserRouter>
       <Sidebar />
       <Switch>
@@ -31,7 +29,6 @@ const App = () => (
       </Switch>
       <Footer />
     </BrowserRouter>
-  </ChakraProvider>
 )
 
 
