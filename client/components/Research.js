@@ -271,7 +271,7 @@ export default function Research() {
           <h2>Company Information</h2>
           <Link to={{
             pathname: `/asset/${id}`,
-            state: { assetState: asset, nameState: company.name, quoteState: quote, assetType: 'stocks' }
+            state: { assetState: asset, nameState: company.name, quoteState: quote, assetType: 'stocks', img: image }
           }}>
             <Image src={`//logo.clearbit.com/${image}`} size='large' wrapped />
             <h3>Name: {company.name}</h3>
@@ -289,7 +289,7 @@ export default function Research() {
           <h2>Coin Information</h2>
           <Link to={{
             pathname: `/asset/${id}`,
-            state: { assetState: asset, nameState: cryptoData.name, quoteState: cryptoData.market_data.price_usd, dataState: cryptoData, assetType: 'crypto', mktCap: cryptoData.marketcap.current_marketcap_usd }
+            state: { assetState: asset, nameState: cryptoData.name, quoteState: cryptoData.market_data.price_usd, dataState: cryptoData, assetType: 'crypto', mktCap: cryptoData.marketcap.current_marketcap_usd, img: cryptoImg }
           }}>
             <Image src={cryptoImg} size='small' wrapped />
             <h3>Name: {cryptoData.name}</h3>
@@ -298,9 +298,12 @@ export default function Research() {
           </Link>
         </Grid.Column>}
         <Grid.Column width={3}>
-          <Link to={{
+          <Link to={assetClass === 'stocks' ? {
             pathname: `/asset/${id}`,
-            state: { assetState: asset, nameState: company.name, quoteState: quote }
+            state: { assetState: asset, nameState: company.name, quoteState: quote, img: image, assetType: 'stocks' }
+          } : {
+            pathname: `/asset/${id}`,
+            state: { assetState: asset, nameState: cryptoData.name, quoteState: cryptoData.market_data.price_usd, dataState: cryptoData, assetType: 'crypto', mktCap: cryptoData.marketcap.current_marketcap_usd, img: cryptoImg }
           }}><Button color='teal' animated>
               <Button.Content visible>Learn More</Button.Content>
               <Button.Content hidden>
