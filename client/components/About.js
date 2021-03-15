@@ -3,36 +3,56 @@ import { Grid, Image, Segment, Header, Accordion, Icon } from 'semantic-ui-react
 
 export default function About() {
 
+  const [faqClicked, updateFaqClicked] = useState(null)
+
+
+function handleClick(index) {
+  const newIndex = faqClicked === index ? null : index
+  updateFaqClicked(newIndex)
+}
+
   return <div className="about-page">
-    <Header as='h1' textAlign='center' style={{ marginBottom: 70 }}>About this website</Header>
   <Grid columns='equal'>
     <Grid.Row stretched>
       <Grid.Column width={10}>
       <Header as='h2' textAlign='center'>How the Website Works:</Header>
         <Segment>
-          <Image src='/images/wireframe/paragraph.png' /> image to go here
+          <Image src='/images/wireframe/paragraph.png' />
         </Segment>
         <Segment>
-          <Image src='/images/wireframe/paragraph.png' /> image to go here
+          <Image src='/images/wireframe/paragraph.png' />
         </Segment>
         <Segment>
-          <Image src='/images/wireframe/paragraph.png' /> image to go here
+          <Image src='/images/wireframe/paragraph.png' />
         </Segment>
       </Grid.Column>
       <Grid.Column>
       <Header as='h2' textAlign='center'>FAQ's</Header>
-      <Segment>
-        <Header as='h5' textAlign='left'>Who built this website?</Header>
-          <Segment>This website was built by Clement Knox, Vesna Zivanovic and Tom Briody</Segment>
-      </Segment>
-      <Segment>
-        <Header as='h5' textAlign='left'>How long did it take?</Header>
-          <Segment>The project was built over the course of 1 week</Segment>
-      </Segment>
-      <Segment>
-        <Header as='h5' textAlign='left'>Is this real money?!</Header>
-          <Segment>No, upon registering you are provided with $100,000 of fake money that you can invest.</Segment>
-      </Segment>
+          <Accordion fluid styled style={{ margin: 15 }}>
+            <Accordion.Title active={faqClicked === 0} onClick={() => handleClick(0)}>
+              <Icon name='dropdown' />
+                What is a dog?
+            </Accordion.Title>
+            <Accordion.Content active={faqClicked === 0}>
+              <p>
+                A dog is a type of domesticated animal. Known for its loyalty and
+                faithfulness, it can be found as a welcome guest in many households
+                across the world.
+              </p>
+        </Accordion.Content>
+      </Accordion>
+      <Accordion fluid styled style={{ margin: 15 }}>
+            <Accordion.Title active={faqClicked === 1} onClick={() => handleClick(1)}>
+              <Icon name='dropdown' />
+                What is a cat?
+            </Accordion.Title>
+            <Accordion.Content active={faqClicked === 1}>
+              <p>
+                BLAH BLAH BLAH
+              </p>
+        </Accordion.Content>
+      </Accordion>
+        <Segment>2</Segment>
       </Grid.Column>
     </Grid.Row>
   </Grid>
