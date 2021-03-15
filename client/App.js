@@ -6,7 +6,7 @@ import axios from 'axios'
 import Register from './components/Register'
 import Login from './components/Login'
 import Home from './components/Home'
-import Sidebar from './components/Sidebar'
+import SidebarComponent from './components/Sidebar'
 import Portfolio from './components/Portfolio'
 import Trading from './components/Trading'
 import Asset from './components/Asset'
@@ -31,8 +31,4 @@ const App = () => (
   </BrowserRouter>
 )
 
-
-
 export default App
-
-//* this is a comment
