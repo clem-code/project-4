@@ -7,33 +7,43 @@ import { XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries, VerticalGridLine
 export default function Asset({ location }) {
   const [financials, updateFinancials] = useState([])
   const [cryptoDescription, updatecryptoDescription] = useState([])
+  const [cryptoMetrics, updateCryptoMetrics] = useState([])
   const [cryptoBackground, updatecryptoBackground] = useState([])
   const [cryptoTechnology, updatecryptoTechnology] = useState([])
   const [ratios, updateRatios] = useState([])
   const [showFinancials, updateShowFinancials] = useState(false)
+  const [showCrypto, updateShowCrypto] = useState(false)
   const [graphData, updateGraphData] = useState([])
   const [xyData, updateXYData] = useState([])
   const [xyDataParam, updateXYDataParam] = useState('')
   const [mktCap, updateMktCap] = useState('')
-  console.log(location)
   const asset = location.state.assetState
   const assetName = location.state.nameState
   const quote = location.state.quoteState
   const assetType = location.state.assetType
+  const image = location.state.img
 
   useEffect(() => {
     async function getMktCap() {
       const { data } = await axios.get(`https://financialmodelingprep.com/api/v3/market-capitalization/${asset}?apikey=8e17a4dcd9894ebe5fc45645972dffa7`)
-      console.log(data[0].marketCap)
       updateMktCap(data[0].marketCap)
     }
     getMktCap()
+  }, [])
+  useEffect(() => {
+    async function getCryptoMetrics() {
+      const { data } = await axios.get(`https://data.messari.io/api/v1/assets/${asset}/metrics`)
+      const blockchain = Object.entries(data.data.blockchain_stats_24_hours)
+      const metrics = Object.entries(data.data.roi_data)
+      const combined = [...blockchain, ...metrics]
+      updateCryptoMetrics(combined)
+    }
+    getCryptoMetrics()
   }, [])
   if (assetType === 'crypto') {
     useEffect(() => {
       async function getCryptoDescription() {
         const { data } = await axios.get(`https://data.messari.io/api/v1/assets/${assetName}/profile`)
-        console.log(' this should only appear if crupto', data.data.overview)
         updatecryptoDescription(data.data.overview)
         updatecryptoBackground(data.data.background)
         updatecryptoTechnology(data.data.technology)
@@ -44,7 +54,6 @@ export default function Asset({ location }) {
   useEffect(() => {
     async function tableData() {
       const { data } = await axios.get(`https://finnhub.io/api/v1/stock/metric?symbol=${asset}&metric=all&token=c13rrgf48v6r3f6kt4d0`)
-      console.log(Object.entries(data.metric))
       updateFinancials(Object.entries(data.metric))
     }
     tableData()
@@ -58,15 +67,6 @@ export default function Asset({ location }) {
     ratioData()
   }, [])
 
-  // useEffect(() => {
-  //   async function balanceSheetData() {
-  //     const { data } = await axios.get(`https://finnhub.io/api/v1/stock/financials-reported?symbol=${asset}&token=c13rrgf48v6r3f6kt4d0`)
-  //     console.log('LOOK HERE', data.data[0].report.bs)
-  //     console.log('LOOK HERE', data.data[0].report.cf)
-  //     console.log('LOOK HERE', data.data[0].report.ic)
-  //   }
-  //   balanceSheetData()
-  // }, [])
 
   useEffect(() => {
 
@@ -76,7 +76,6 @@ export default function Asset({ location }) {
     }
     async function cryptoGraphFunc() {
       const { data } = await axios.get(`https://data.messari.io/api/v1/assets/${asset}/metrics/price/time-series?start=2021-01-01&interval=1d`)
-      console.log('DFFGDDFFDGDGFGDFGDFGDF', data.data.values)
       const cryptoTimeSeries = data.data.values.reverse()
       updateGraphData(cryptoTimeSeries)
 
@@ -110,7 +109,6 @@ export default function Asset({ location }) {
       }
       updateXYData(dataPointArray)
       updateXYDataParam(dataPointArray.length)
-      console.log('look here please god', dataPointArray)
     }
     if (assetType !== 'crypto') {
       graphFunc1()
@@ -119,12 +117,6 @@ export default function Asset({ location }) {
     }
   }, [graphData])
 
-  // function graphEdit() {
-  //   const newParams = xyData.slice(0, 7)
-  //   updateXYData(newParams)
-  //   updateXYDataParam(newParams.length)
-  // }
-
   function revealFinancials() {
     if (showFinancials) {
       updateShowFinancials(false)
@@ -132,8 +124,13 @@ export default function Asset({ location }) {
       updateShowFinancials(true)
     }
   }
-
-
+  function revealMore() {
+    if (showCrypto) {
+      updateShowCrypto(false)
+    } else {
+      updateShowCrypto(true)
+    }
+  }
 
   if (!graphData) {
     return null
@@ -141,13 +138,15 @@ export default function Asset({ location }) {
   if (!financials) {
     return null
   }
-
+  if (!cryptoMetrics) {
+    return null
+  }
   const hidden = { overflow: 'auto', maxHeight: '500px', display: 'none' }
   const revealed = { overflow: 'auto', maxHeight: 300, display: 'inline-block' }
 
-
   return <div>
     <h1>{assetName}</h1>
+    <Image src={assetType !== 'crypto' ? `//logo.clearbit.com/${image}` : image} size={assetType !== 'crypto' ? 'large' : 'tiny'} wrapped />
     <h3>Share Price (USD): {Number(quote).toFixed(2)}</h3>
     <h3>Market Capitalization (USD) {assetType === 'crypto' ? location.state.mktCap : Number(mktCap).toFixed(2)}</h3>
     <Grid>
@@ -161,6 +160,8 @@ export default function Asset({ location }) {
             <LineSeries color="purple" data={xyData} />
           </XYPlot>
         </Grid.Column>
+
+
         {assetType !== 'crypto' && <Grid.Column>
           Key Ratios & Multiples
           <Container style={revealed}>
@@ -190,17 +191,41 @@ export default function Asset({ location }) {
             </Grid>
           </Container>
         </Grid.Column>}
+
         {assetType === 'crypto' && <Grid.Column>
           <h4>Description</h4>
           <Container style={revealed}>{cryptoDescription}</Container>
-          <h4>Background</h4>
-          <Container style={revealed}>{cryptoBackground}</Container>
-          <h4>Technology</h4>
-          <Container style={revealed}>{cryptoTechnology}</Container>
+          <h4>Metrics</h4>
+          <Container style={revealed}>
+            <Grid>
+              <Grid.Row>
+                {cryptoMetrics.map((data, index) => {
+                  if (data[1] !== null && data[1] !== 0)
+                    return <div key={index}>
+                      <Grid.Column key={index} width={3} >
+                        < Table celled >
+                          <Table.Header>
+                            <Table.Row>
+                              <Table.HeaderCell>{data[0]}</Table.HeaderCell>
+                            </Table.Row>
+                          </Table.Header>
+                          <Table.Body>
+                            <Table.Row>
+                              <Table.Cell>
+                                {data[1]}
+                              </Table.Cell>
+                            </Table.Row>
+                          </Table.Body>
+                        </Table>
+                      </Grid.Column>
+                    </div>
+                })}
+              </Grid.Row>
+            </Grid>
+          </Container>
         </Grid.Column>}
       </Grid.Row>
     </Grid>
-
     <div>
       <Link to={'/research'}>
         <Button animated color='red'>
@@ -211,16 +236,28 @@ export default function Asset({ location }) {
         </Button>
       </Link>
     </div>
-    <div>
-
+    {assetType !== 'crypto' && <div>
       <Button animated color='purple' onClick={revealFinancials}>
         <Button.Content visible>See Financials</Button.Content>
         <Button.Content hidden>
           Click Here
         </Button.Content>
       </Button>
-
-    </div>
+    </div>}
+    {assetType === 'crypto' && <div>
+      <Button animated color='purple' onClick={revealMore}>
+        <Button.Content visible>Learn More</Button.Content>
+        <Button.Content hidden>
+          Click Here
+        </Button.Content>
+      </Button>
+    </div>}
+    {assetType === 'crypto' && <Grid.Column style={showCrypto ? revealed : hidden}>
+      <h4>Background</h4>
+      <Container >{cryptoBackground}</Container>
+      <h4>Technology</h4>
+      <Container >{cryptoTechnology}</Container>
+    </Grid.Column>}
     <Container style={showFinancials ? revealed : hidden}>
       <Grid >
         <Grid.Row >
