@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link, withRouter } from 'react-router-dom'
-import { Header, Icon, Image, Menu, Segment, Sidebar } from 'semantic-ui-react'
+import { Header, Icon, Image, Menu, Segment, Sidebar, Button} from 'semantic-ui-react'
 
 
 
@@ -36,6 +36,8 @@ export default function SidebarComponent() {
       <Icon name='help' />
       About
     </Menu.Item>
+    <p className='mr-5 has-text-dark'>{localStorage.getItem('name') ? `Welcome ${localStorage.getItem('name')}!` : ''}</p>
+   
       </Menu>
   </div>
 }

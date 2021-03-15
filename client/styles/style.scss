@@ -4,8 +4,10 @@
 }
 
 .portfolio-page {
-  margin: 100px;
+  margin-left: 100px;
+  margin-right: 100px;
   text-align: center;
+  color: white;
 }
 
 .profit-loss {
@@ -35,4 +37,13 @@
 
 .error {
   color: red;
+}
+
+#root {
+  background-color:grey;
+}
+
+.trade-history {
+  display: flex;
+  justify-content: center;
 }
