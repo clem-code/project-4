@@ -15,20 +15,20 @@ import About from './components/About'
 import Footer from './components/Footer'
 
 const App = () => (
-    <BrowserRouter>
-      <SidebarComponent />
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/register" component={Register} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/portfolio" component={Portfolio} />
-        <Route exact path="/research" component={Research} />
-        <Route exact path="/trading" component={Trading} />
-        <Route exact path="/asset/:assetId" component={Asset} />
-        <Route exact path="/about" component={About} />
-      </Switch>
-      <Footer />
-    </BrowserRouter>
+  <BrowserRouter>
+    <Sidebar />
+    <Switch>
+      <Route exact path="/" component={Home} />
+      <Route exact path="/register" component={Register} />
+      <Route exact path="/login" component={Login} />
+      <Route exact path="/portfolio" component={Portfolio} />
+      <Route exact path="/research" component={Research} />
+      <Route exact path="/trading" component={Trading} />
+      <Route exact path="/asset/:assetId" component={Asset} />
+      <Route exact path="/about" component={About} />
+    </Switch>
+    <Footer />
+  </BrowserRouter>
 )
 
 export default App
