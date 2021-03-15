@@ -4,7 +4,6 @@ import 'semantic-ui-css/semantic.min.css'
 
 import {
   Button,
-  Container,
   Form,
   Grid,
   Header,
@@ -13,9 +12,7 @@ import {
 } from 'semantic-ui-react'
 
 export default function Register({ history }) {
-  /* Error handling!! */
   const [error, updateError] = useState('')
-  /* How to define inital state? */
   const [formData, updateFormData] = useState({
     username: '',
     email: '',
@@ -36,11 +33,10 @@ export default function Register({ history }) {
       console.log(data)
       history.push('/login')
     } catch (err) {
-      //console.log(err.response.data._message)
       if (formData.username === '' || formData.email === '' || formData.password === '') {
         updateError('All fields are required!')
-      } else {
-        updateError('User with this email account is already registered!')
+      } else {  
+        updateError('User already exists.')
       }
     }
   }
