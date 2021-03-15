@@ -4,8 +4,10 @@
 }
 
 .portfolio-page {
-  margin: 100px;
+  margin-left: 100px;
+  margin-right: 100px;
   text-align: center;
+  color: white;
 }
 
 .profit-loss {
@@ -15,10 +17,24 @@
 .menu-container {
   border-radius: 0;
 }
-.newsbox{
+.newsbox {
   height: 290px;
   padding: 5px;
 }
-.hidden{
+
+.hidden {
   display: none;
+}
+
+.about-page {
+  margin: 100px;
+
+}
+
+.about-header {
+  margin-bottom: 500px;
+}
+
+#root {
+  background-color:grey;
 }

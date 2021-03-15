@@ -7,7 +7,9 @@ import {
   Container,
   Form,
   Grid,
-  Header
+  Header,
+  Message,
+  Segment
 } from 'semantic-ui-react'
 
 export default function Register({ history }) {
@@ -34,7 +36,7 @@ export default function Register({ history }) {
       console.log(data)
       history.push('/login')
     } catch (err) {
-      console.log(err.response.data._message)
+      //console.log(err.response.data._message)
       if (formData.username === '' || formData.email === '' || formData.password === '') {
         updateError('All fields are required!')
       } else {
@@ -43,44 +45,50 @@ export default function Register({ history }) {
     }
   }
 
-
   return <>
     <div className="register">
-      <Grid textAlign="center">
-        <Container>
-          <Header size="huge">Please register</Header>
+      <Grid textAlign="center" verticalAlign="middle" style={{ paddingTop: 80, paddingBottom: 80 }}>
+        <Grid.Column style={{ maxWidth: 500 }}>
+          <Header as="h2" color="teal" textAlign="center">
+            Create an account
+          </Header>
           <Form size="large" onSubmit={handleSubmit}>
-            <Form.Input
-              name="username"
-              placeholder="Username"
-              type="text"
-              value={formData.username}
-              onChange={handleChange}
-            />
-            <Form.Input
-              name="email"
-              placeholder="Email address"
-              type="text"
-              value={formData.email}
-              onChange={handleChange}
-            />
-            <Form.Input
-              name="password"
-              placeholder="Password"
-              type="password"
-              value={formData.password}
-              onChange={handleChange}
-            />
-            <Form.Checkbox required
-              label="I agree to the Terms and Conditions"
-            />
-            <Button primary fluid size="large" type="submit">
-              Register
-            </Button>
-            <br />
-            <p className="error">{ error }</p>
+            <Segment stacked>
+              <Form.Input
+                fluid
+                placeholder="Username"
+                value={formData.username}
+                onChange={handleChange}
+                name={'username'}
+              />
+              <Form.Input
+                fluid
+                placeholder="Email address"
+                value={formData.email}
+                onChange={handleChange}
+                name={'email'}
+              />
+              <Form.Input
+                fluid
+                placeholder="Password"
+                type="password"
+                value={formData.password}
+                onChange={handleChange}
+                name={'password'}
+              />
+              <Form.Checkbox required
+                label="I agree to the Terms and Conditions"
+              />
+              <Button color="teal" fluid size="large">
+                Register
+              </Button>
+            </Segment>
+            <p className="error">{error}</p>
           </Form>
-        </Container>
+          <Message>
+            Already have an account? <a href="/login">Login</a>
+          </Message>
+        </Grid.Column>
       </Grid>
     </div>
   </>

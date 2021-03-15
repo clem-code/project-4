@@ -1,61 +1,68 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Grid, Image } from 'semantic-ui-react'
-import { Table, Header } from 'semantic-ui-react'
+import { Table, Header, Statistic, Container } from 'semantic-ui-react'
 
 export default function Portfolio() {
 
-  const [userFavourites, updateUserFavourites] = useState([])
+  const [userData, updateUserData] = useState({})
+  const [tradeData, updateTradeData] = useState([])
 
-  // const [userInfo, updateUserInfo] = useState([])
+
+  const token = localStorage.getItem('token')
+
+  // console.log('TOKEN>', token)
 
     useEffect(() => {
     async function fetchData() {
-      const { data } = await axios.get('/api/profile')
-      updateUserFavourites(data)
+      const { data } = await axios.get('/api/profile', { headers: { Authorization: `Bearer ${token}` }
+      })
+      updateUserData(data)
     }
     fetchData()
+    
   }, [])
 
-    function mapUserData() {
-    return userFavourites.map((data, index) => {
-      return <div key={index}>
-        <h1>{data}</h1>
-      </div>
-    })
-  }
-  mapUserData()
-  console.log(userFavourites)
-  // console.log('DATA>', data)
+  useEffect(() => {
+    async function fetchData() {
+      const { data } = await axios.get('/api/profile', { headers: { Authorization: `Bearer ${token}` }
+      })
+      console.log('DATA>',data)
+      updateTradeData(data.trades)
+    }
+    fetchData()
+    
+  }, [])
+  
+  if (!userData) return null
+  if (!tradeData) return null
 
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     const { data } = await axios.get('/api/stocks')
-  //     updateUserInfo(data)
-  //   }
-  //   fetchData()
-  // }, [])
+  console.log('TRADE DATA>', tradeData)
 
-  // function mapUserData() {
-  //   return userInfo.map((data, index) => {
-  //     return <div key={index}>
-  //       <h1>{data}</h1>
-  //     </div>
-  //   })
-  // }
-  // mapUserData()
   return <div className="portfolio-page">
-    <h1 style={{ margin: 40 }}>Toms Portfolio</h1>
+    
+    <h1 style={{ marginTop: 40, marginBottom: 50 }}>{userData.username}'s Portfolio</h1>
       <Grid divided='vertically'>
     <Grid.Row columns={3}>
       <Grid.Column>
-        <h3>Available Balance: $65,456</h3>
+        <h2>Available Balance: ${userData.wallet}</h2>
       </Grid.Column>
       <Grid.Column>
       <h3>Profit/Loss: <span className="profit-loss"> + 6.7%</span></h3>
       </Grid.Column>
       <Grid.Column>
-        <p>Graph to go here?</p>
+        <Container>
+          <Statistic size='mini'>
+            <Statistic.Value>54</Statistic.Value>
+              <Statistic.Label>trades</Statistic.Label>
+          </Statistic>
+          <Statistic size='mini'>
+            <Statistic.Value>$56,000</Statistic.Value>
+              <Statistic.Label>biggest trade</Statistic.Label>
+          </Statistic>
+
+        </Container>
+        
       </Grid.Column>
     </Grid.Row>
 
@@ -122,7 +129,39 @@ export default function Portfolio() {
       </Grid.Column>
     </Grid.Row>
   </Grid>
-    {userFavourites}
-</div>
 
+    <Grid columns={2} divided>
+    <Grid.Row>
+      <Grid.Column>
+      <Header as='h2' textAlign='center'>Transaction History</Header>
+    <div className="trade-history">
+    <Table celled inverted selectable>
+      <Table.Header>
+        <Table.Row>
+          <Table.HeaderCell>Name</Table.HeaderCell>
+          <Table.HeaderCell>Buy/Sell</Table.HeaderCell>
+          <Table.HeaderCell textAlign='center'>Number of Shares</Table.HeaderCell>
+          <Table.HeaderCell>Price</Table.HeaderCell>
+        </Table.Row>
+      </Table.Header>
+      <Table.Body>
+    
+      {tradeData.map((trade, index) => {
+      return <Table.Row key={index}>
+        <Table.Cell>{trade.name_of_asset}</Table.Cell>
+        <Table.Cell>{trade.transaction_type}</Table.Cell>
+        <Table.Cell textAlign='center'>{trade.qty_purchased}</Table.Cell>
+        <Table.Cell>{trade.asset_price}</Table.Cell>
+      </Table.Row>
+    })}
+    </Table.Body>
+    </Table>
+    </div>
+      </Grid.Column>
+      <Grid.Column>
+       <img src='https://www.tutorialspoint.com/tables_graphs_functions_and_sequences/images/interpreting_line_graph_example1.jpg' />
+      </Grid.Column>
+    </Grid.Row>
+    </Grid>
+  </div>
 }
