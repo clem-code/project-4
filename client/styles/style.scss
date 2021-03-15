@@ -35,6 +35,15 @@
   margin-bottom: 500px;
 }
 
+.error {
+  color: red;
+}
+
 #root {
   background-color:grey;
+}
+
+.trade-history {
+  display: flex;
+  justify-content: center;
 }

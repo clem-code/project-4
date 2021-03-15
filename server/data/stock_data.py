@@ -14,7 +14,7 @@ for crypto in cryptos:
     example = Stock(
         name=f"{crypto['name']}",
         symbol=f"{crypto['symbol']}",
-        user=[list_users[2]],
+        user=[list_users[0]],
         type_of="crypto",
     )
     list_stocks.append(example)
