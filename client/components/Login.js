@@ -35,9 +35,11 @@ export default function Login({ history }) {
   }
 
   async function handleSubmit(event) {
+    console.log(formData)
     event.preventDefault()
     try {
       const { data } = await axios.post('/api/login', formData)
+      console.log(data)
 
       if (localStorage) {
         console.log(localStorage)
@@ -45,19 +47,21 @@ export default function Login({ history }) {
         const token = data.token
         const payloadAsString = atob(token.split('.')[1])
         const payloadAsObject = JSON.parse(payloadAsString)
-        const userID = payloadAsObject.userId
+        console.log('LOOK HERE', payloadAsObject)
+        const userID = payloadAsObject.sub
         console.log('userd ID', userID)
-        const filtered = userList.filter((user) => {
-          if (user._id === userID) {
-            return user
-          }
-        })
 
-        localStorage.setItem('name', filtered[0].name)
+        // const filtered = userList.filter((user) => {
+        //   if (user._id === userID) {
+        //     return user
+        //   }
+        // })
+
+        // localStorage.setItem('name', filtered[0].name)
       }
       history.push('/')
     } catch (err) {
-      console.log(err.response.data)
+      // console.log(err.response.data)
       updateError('Wrong email or password! Try again or register if you don\'t have an account.')
     }
   }
