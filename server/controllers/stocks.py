@@ -45,6 +45,15 @@ def get_single_stock_by_symbol(symbol):
     return stock_schema.jsonify(stock), 200
 
 
+@router.route("/crypto/<string:symbol>", methods=["GET"])
+def get_single_crypto_by_symbol(symbol):
+    crypto = Stock.query.filter_by(symbol=f"{symbol}", type_of="crypto").first()
+    if not crypto:
+        return {"message": "Crypto not found"}, 404
+
+    return stock_schema.jsonify(crypto), 200
+
+
 # ! POST A User Favourite TO A Stock
 @router.route("/stocks/<int:stock_id>/favourites/<int:user_id>", methods=["POST"])
 @secure_route

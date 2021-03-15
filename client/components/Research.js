@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link, Redirect, withRouter } from 'react-router-dom'
-import { Button, Icon, Search, Grid, Image, Card, Table, Label } from 'semantic-ui-react'
+import { Button, Icon, Search, Grid, Image, Card, Table, Label, Select } from 'semantic-ui-react'
 import { shuffle } from 'lodash'
 import Ticker from 'react-ticker'
 
@@ -9,12 +9,17 @@ import Ticker from 'react-ticker'
 export default function Research() {
   const [search, updateSearch] = useState('')
   const [asset, updateAsset] = useState('')
+  const [assetClass, updateAssetClass] = useState('stocks')
+  const [cryptoName, updateCryptoName] = useState('')
   const [company, updateCompanies] = useState({})
+  const [cryptoData, updateCryptoData] = useState({ market_data: '', marketcap: '' })
+  const [cryptoImg, updateCryptoImg] = useState('https://cryptoicons.org/api/icon/eth/200')
   const [price, updatePrice] = useState({})
   const [id, updateId] = useState(0)
   const [userId, updateUserId] = useState(0)
   const [favourites, updateFavourites] = useState([])
   const [image, updateImage] = useState('blackboard.com')
+  const [quote, updateQuote] = useState('')
   const [news, updateNews] = useState([])
   const [dow, updateDow] = useState('')
   const [nasdaq, updateNasdaq] = useState('')
@@ -29,37 +34,67 @@ export default function Research() {
   const [ethC, updateETHC] = useState('')
   const [tetherC, updateTetherC] = useState('')
 
+  const assetOptions = [
+    { key: 'st', value: 'stocks', text: 'Stocks' },
+    { key: 'cr', value: 'crypto', text: 'Crypto' }
+  ]
   async function searchFunc() {
     const searchTerm = search.toLowerCase()
     const symbolSearch = searchTerm.toUpperCase()
-    const { data } = await axios.get(`/api/stocks/${symbolSearch}`)
-    console.log(data)
-    updateId(data.id)
-    updateAsset(data.symbol)
+    if (assetClass === 'stocks') {
+      const { data } = await axios.get(`/api/stocks/${symbolSearch}`)
+      console.log(data)
+      updateId(data.id)
+      updateAsset(data.symbol)
+    } else {
+      const { data } = await axios.get(`/api/crypto/${symbolSearch}`)
+      updateCryptoName(data.name)
+      updateId(data.id)
+      updateAsset(data.symbol)
+    }
   }
-  async function get_user_id() {
-    const { data } = await axios.get('http://localhost:5000/api/profile')
-    const userId = data.id
-    updateUserId(userId)
-    const favourites = data.favourites
-    updateFavourites(data.favourites)
-    console.log(userId, favourites)
-  }
+  // async function get_user_id() {
+  //   const { data } = await axios.get('http://localhost:5000/api/profile')
+  //   const userId = data.id
+  //   updateUserId(userId)
+  //   const favourites = data.favourites
+  //   updateFavourites(data.favourites)
+  //   console.log(userId, favourites)
+  // }
+  useEffect(() => {
+    async function cryptoImg(asset) {
+      const { data } = await axios.get(`https://api.nomics.com/v1/currencies/ticker?key=e999ef911093392494fc15a4c67d84b4&ids=${asset}`)
+      updateCryptoImg(data[0].logo_url)
+    }
+    cryptoImg(asset)
+  }, [asset])
 
 
   useEffect(() => {
     async function fetchInfo(asset) {
-      const { data } = await axios.get(`https://finnhub.io/api/v1/stock/profile2?symbol=${asset}&token=c13rrgf48v6r3f6kt4d0`)
-      console.log(data)
-      updateCompanies(data)
-      const src = data.weburl.slice(8, data.weburl.length - 1).replace('www.', '')
-      console.log(src)
-      updateImage(src)
+      if (assetClass === 'stocks') {
+        const { data } = await axios.get(`https://finnhub.io/api/v1/stock/profile2?symbol=${asset}&token=c13rrgf48v6r3f6kt4d0`)
+        console.log(data)
+        updateCompanies(data)
+        const src = data.weburl.slice(8, data.weburl.length - 1).replace('www.', '')
+        updateImage(src)
+      }
+      else {
+        const { data } = await axios.get(`https://data.messari.io/api/v1/assets/${cryptoName}/metrics`)
+        updateCryptoData(data.data)
+      }
     }
+    async function fetchQuote(asset) {
+      const { data } = await axios.get(`https://finnhub.io/api/v1/quote?symbol=${asset}&token=c13rrgf48v6r3f6kt4d0`)
+      updateQuote(data.c)
+    }
+
     if (asset.length > 0) {
       fetchInfo(asset)
+      fetchQuote(asset)
     }
   }, [asset])
+
   useEffect(() => {
     async function fetchNews() {
       const { data } = await axios.get('https://api.nytimes.com/svc/news/v3/content/nyt/business.json?api-key=LloagDB4NUM7hAC2OOP6deCVztdY1Dvj')
@@ -112,7 +147,6 @@ export default function Research() {
       updateETH(eth)
       const ethC = Number(data.ethereum.usd_24h_change).toFixed(2)
       updateETHC(ethC)
-
     }
     async function fetchData8() {
       const { data } = await axios.get('https://api.coingecko.com/api/v3/simple/price?ids=tether&vs_currencies=usd&include_24hr_change=true')
@@ -130,14 +164,13 @@ export default function Research() {
     fetchData6()
     fetchData7()
     fetchData8()
-    get_user_id()
   }, [])
-
-
   if (!company) {
     return null
   }
-
+  if (!cryptoData) {
+    return null
+  }
   const cardStyle = {
     backgroundColor: 'black',
     border: 'solid 2px yellow',
@@ -226,21 +259,23 @@ export default function Research() {
       <Grid.Row>
         <Grid.Column width={3}>
           <Search
-            onSearchChange={(event) => updateSearch(event.target.value)} type="text" placeholder="Search companies..."
+            onSearchChange={(event) => updateSearch(event.target.value)} type="text" placeholder="Search Assets..."
           />
+          <Select placeholder='Select your asset' options={assetOptions} onChange={(event) => updateAssetClass(event.target.innerText.toLowerCase())} />
           <Button
             content='Search'
             onClick={searchFunc}
           />
         </Grid.Column>
-        <Grid.Column width={5}>
+        {assetClass === 'stocks' && <Grid.Column width={5}>
           <h2>Company Information</h2>
           <Link to={{
             pathname: `/asset/${id}`,
-            state: { assetState: asset }
+            state: { assetState: asset, nameState: company.name, quoteState: quote, assetType: 'stocks' }
           }}>
             <Image src={`//logo.clearbit.com/${image}`} size='large' wrapped />
             <h3>Name: {company.name}</h3>
+            <h4>Share Price (USD): {quote}</h4>
           </Link>
           <p>Exchange: {company.exchange}</p>
           <p>Currency: {company.currency}</p>
@@ -249,11 +284,23 @@ export default function Research() {
           <p>Country: {company.country}</p>
           <p>IPO: {company.ipo}</p>
           <p>Website: <a target="_blank" rel="noreferrer" href={company.weburl}>{company.weburl}</a></p>
-        </Grid.Column>
+        </Grid.Column>}
+        {assetClass === 'crypto' && <Grid.Column width={5}>
+          <h2>Coin Information</h2>
+          <Link to={{
+            pathname: `/asset/${id}`,
+            state: { assetState: asset, nameState: cryptoData.name, quoteState: cryptoData.market_data.price_usd, dataState: cryptoData, assetType: 'crypto', mktCap: cryptoData.marketcap.current_marketcap_usd }
+          }}>
+            <Image src={cryptoImg} size='small' wrapped />
+            <h3>Name: {cryptoData.name}</h3>
+            <h4>Price (USD): {cryptoData.market_data.price_usd}</h4>
+            <h4>Price (BTC): {cryptoData.market_data.price_btc}</h4>
+          </Link>
+        </Grid.Column>}
         <Grid.Column width={3}>
           <Link to={{
             pathname: `/asset/${id}`,
-            state: { assetState: asset }
+            state: { assetState: asset, nameState: company.name, quoteState: quote }
           }}><Button color='teal' animated>
               <Button.Content visible>Learn More</Button.Content>
               <Button.Content hidden>
@@ -266,6 +313,14 @@ export default function Research() {
               <Icon name='star' />
             </Button.Content>
           </Button>
+          <Link to={'/trading'}>
+            <Button color='purple' animated>
+              <Button.Content visible>Trade</Button.Content>
+              <Button.Content hidden>
+                <Icon name='handshake outline' />
+              </Button.Content>
+            </Button>
+          </Link>
         </Grid.Column>
       </Grid.Row>
     </Grid>
