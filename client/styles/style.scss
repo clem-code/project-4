@@ -4,8 +4,10 @@
 }
 
 .portfolio-page {
-  margin: 100px;
+  margin-left: 100px;
+  margin-right: 100px;
   text-align: center;
+  color: white;
 }
 
 .profit-loss {
@@ -30,4 +32,8 @@
 
 .about-header {
   margin-bottom: 500px;
+}
+
+#root {
+  background-color:grey;
 }

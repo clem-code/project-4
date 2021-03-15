@@ -8,7 +8,7 @@ list_trades = [
         total_trade_value=50,
         transaction_type="buy",
         stock_id=1,
-        user_id=1,
+        user_id=2,
     ),
     Trade(
         name_of_asset="aapl",
@@ -17,7 +17,7 @@ list_trades = [
         total_trade_value=150,
         transaction_type="buy",
         stock_id=1,
-        user_id=3,
+        user_id=2,
     ),
     Trade(
         name_of_asset="goog",
