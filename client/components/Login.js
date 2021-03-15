@@ -50,26 +50,17 @@ export default function Login({ history }) {
         console.log('LOOK HERE', payloadAsObject)
         const userID = payloadAsObject.sub
         console.log('userd ID', userID)
-
-        // const filtered = userList.filter((user) => {
-        //   if (user._id === userID) {
-        //     return user
-        //   }
-        // })
-
-        // localStorage.setItem('name', filtered[0].name)
       }
       history.push('/')
     } catch (err) {
-      // console.log(err.response.data)
       updateError('Wrong email or password! Try again or register if you don\'t have an account.')
     }
   }
 
   return <>
     <div className="login">
-      <Grid textAlign="center" verticalAlign="middle">
-        <Grid.Column style={{ maxWidth: 450 }}>
+      <Grid textAlign="center" verticalAlign="middle" style={{ paddingTop: 80, paddingBottom: 80 }}>
+        <Grid.Column style={{ maxWidth: 500 }}>
           <Header as="h2" color="teal" textAlign="center">
             Log in to your account
           </Header>
@@ -101,7 +92,7 @@ export default function Login({ history }) {
             <p className="error">{error}</p>
           </Form>
           <Message>
-            New on this website? <a href="/register">Sign Up</a>
+            New on this website? <a href="/register">Register</a>
           </Message>
         </Grid.Column>
       </Grid>
