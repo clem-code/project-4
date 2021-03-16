@@ -1,13 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, withRouter } from 'react-router-dom'
-import { Header, Icon, Image, Menu, Segment, Sidebar, Button} from 'semantic-ui-react'
+import { Header, Icon, Menu, Sidebar, Button} from 'semantic-ui-react'
 
+const SidebarComponent = ({ history }) => {
+console.log('HISTORY', history)
 
+const [changelogin, updateChangeLogin] = useState(false)
 
-export default function SidebarComponent() {
+const token = localStorage.getItem('token')
 
+function handleLogout() {
+  localStorage.removeItem('token')
+  localStorage.removeItem('name')
+  updateChangeLogin(!changelogin)
+  console.log('TOKEN>', token)
+  history.push('/')
+}
   return <div>
-    <Menu className="menu-container" inverted widths='7' size='large' stackable>
+    <Menu className="menu-container" inverted widths='8' size='large' stackable>
       <Menu.Item as={Link} to='/'> 
       <Icon name='home' />
       Home
@@ -36,8 +46,14 @@ export default function SidebarComponent() {
       <Icon name='help' />
       About
     </Menu.Item>
-    <p className='mr-5 has-text-dark'>{localStorage.getItem('name') ? `Welcome ${localStorage.getItem('name')}!` : ''}</p>
-   
-      </Menu>
+    <Menu.Item>
+      {token && <Button onClick={handleLogout}>
+              <strong>Logout</strong>
+            </Button>}
+    </Menu.Item>
+
+     </Menu>
   </div>
 }
+
+export default withRouter(SidebarComponent)

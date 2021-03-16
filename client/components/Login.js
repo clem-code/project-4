@@ -49,7 +49,7 @@ export default function Login({ history }) {
         const payloadAsObject = JSON.parse(payloadAsString)
         console.log('LOOK HERE', payloadAsObject)
         const userID = payloadAsObject.sub
-        console.log('userd ID', userID)
+        console.log('user ID', userID)
       }
       history.push('/')
     } catch (err) {

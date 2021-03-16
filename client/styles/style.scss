@@ -10,8 +10,12 @@
   color: white;
 }
 
-.profit-loss {
+.balance {
   color: green;
+}
+
+.spent {
+  color: red;
 }
 
 .menu-container {
@@ -43,7 +47,9 @@
   background-color:rgb(216, 211, 211);
 }
 
-.trade-history {
+.table-holder{
   display: flex;
   justify-content: center;
+  height: 308px;
+  overflow-y: auto;
 }
