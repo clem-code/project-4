@@ -35,7 +35,6 @@ export default function Login({ history }) {
   }
 
   async function handleSubmit(event) {
-    console.log(formData)
     event.preventDefault()
     try {
       const { data } = await axios.post('/api/login', formData)
@@ -47,7 +46,7 @@ export default function Login({ history }) {
         const payloadAsString = atob(token.split('.')[1])
         const payloadAsObject = JSON.parse(payloadAsString)
         const userID = payloadAsObject.sub
-        console.log('userd ID', userID)
+        console.log('user ID', userID)
       }
       history.push('/')
     } catch (err) {
