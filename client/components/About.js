@@ -6,28 +6,28 @@ export default function About() {
   const [faqClicked, updateFaqClicked] = useState(null)
 
 
-function handleClick(index) {
-  const newIndex = faqClicked === index ? null : index
-  updateFaqClicked(newIndex)
-}
+  function handleClick(index) {
+    const newIndex = faqClicked === index ? null : index
+    updateFaqClicked(newIndex)
+  }
 
   return <div className="about-page">
-  <Grid columns='equal'>
-    <Grid.Row stretched>
-      <Grid.Column width={10}>
-      <Header as='h2' textAlign='center'>How the Website Works:</Header>
-        <Segment>
-          <Image src='/images/wireframe/paragraph.png' />
-        </Segment>
-        <Segment>
-          <Image src='/images/wireframe/paragraph.png' />
-        </Segment>
-        <Segment>
-          <Image src='/images/wireframe/paragraph.png' />
-        </Segment>
-      </Grid.Column>
-      <Grid.Column>
-      <Header as='h2' textAlign='center'>FAQ's</Header>
+    <Grid columns='equal'>
+      <Grid.Row stretched>
+        <Grid.Column width={10}>
+          <Header as='h2' textAlign='center'>How the Website Works:</Header>
+          <Segment>
+            <Image src='/images/wireframe/paragraph.png' />
+          </Segment>
+          <Segment>
+            <Image src='/images/wireframe/paragraph.png' />
+          </Segment>
+          <Segment>
+            <Image src='/images/wireframe/paragraph.png' />
+          </Segment>
+        </Grid.Column>
+        <Grid.Column>
+          <Header as='h2' textAlign='center'>FAQ's</Header>
           <Accordion fluid styled style={{ margin: 15 }}>
             <Accordion.Title active={faqClicked === 0} onClick={() => handleClick(0)}>
               <Icon name='dropdown' />
@@ -37,7 +37,7 @@ function handleClick(index) {
               <p>
                 No, when you register an account you are provided with $100,000 of fake money that you can use to invest in the stocks and crypto of your choosing. You can then track the progress of your investments!
               </p>
-           </Accordion.Content>
+            </Accordion.Content>
           </Accordion>
           <Accordion fluid styled style={{ margin: 15 }}>
             <Accordion.Title active={faqClicked === 1} onClick={() => handleClick(1)}>
@@ -61,10 +61,9 @@ function handleClick(index) {
               </p>
             </Accordion.Content>
           </Accordion>
-        <Segment>2</Segment>
-      </Grid.Column>
-    </Grid.Row>
-  </Grid>
-</div>
-
+          <Segment>2</Segment>
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
+  </div>
 }

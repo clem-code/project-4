@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Grid, Image } from 'semantic-ui-react'
-import { Table, Header, Statistic, Container, Loader } from 'semantic-ui-react'
+import { Grid, Table, Header, Container, Loader } from 'semantic-ui-react'
 
 export default function Portfolio() {
 
@@ -27,17 +26,17 @@ export default function Portfolio() {
 
   function filterStocks() {
     return tradeData.filter(trade => {
-        if (trade.asset_type === 'stocks') {
-          return trade
-        }
+      if (trade.asset_type === 'stocks') {
+        return trade
+      }
     })
   }
 
   function filterCrypto() {
     return tradeData.filter(trade => {
-        if (trade.asset_type === 'crypto') {
-          return trade
-        }
+      if (trade.asset_type === 'crypto') {
+        return trade
+      }
     })
   }
 
@@ -84,115 +83,113 @@ export default function Portfolio() {
   }, [])
 
 
-  return (
-<>
+  return <>
     {!yourStocks || !yourStocks.length ? <Loader active /> : 
-  <div className="portfolio-page">
-    <h1 style={{ marginTop: 40, marginBottom: 50 }}>{userData.username}'s Portfolio</h1>
-    <Grid divided='vertically'>
-      <Grid.Row columns={3}>
-        <Grid.Column>
-          <h2>Available Balance: <span className="balance">${Number(userData.wallet).toFixed(2)}</span></h2>
-        </Grid.Column>
-        <Grid.Column>
-          <h2>Total Spent: <span className="spent">${Number(100000 - userData.wallet).toFixed(2)}</span></h2>
-        </Grid.Column>
-        <Grid.Column>
-          <Container>
-            <h2>Trades Completed: {tradeData.length} </h2>
-          </Container>
-        </Grid.Column>
-      </Grid.Row>
-      <Grid.Row columns={2} divided>
-        <Grid.Column>
-          <Header as='h1' textAlign='left'>Your Stocks</Header>
-          <div className="table-holder">
-          <Table celled inverted selectable style={{ margin: 10 }}>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Name</Table.HeaderCell>
-                <Table.HeaderCell># Held</Table.HeaderCell>
-                <Table.HeaderCell>Price paid</Table.HeaderCell>
-                <Table.HeaderCell>Current Value</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
+      <div className="portfolio-page">
+        <h1 style={{ marginTop: 40, marginBottom: 50 }}>{userData.username}'s Portfolio</h1>
+        <Grid divided='vertically'>
+          <Grid.Row columns={3}>
+            <Grid.Column>
+              <h2>Available Balance: <span className="balance">${Number(userData.wallet).toFixed(2)}</span></h2>
+            </Grid.Column>
+            <Grid.Column>
+              <h2>Total Spent: <span className="spent">${Number(100000 - userData.wallet).toFixed(2)}</span></h2>
+            </Grid.Column>
+            <Grid.Column>
+              <Container>
+                <h2>Trades Completed: {tradeData.length} </h2>
+              </Container>
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row columns={2} divided>
+            <Grid.Column>
+              <Header as='h1' textAlign='left'>Your Stocks</Header>
+              <div className="table-holder">
+                <Table celled inverted selectable style={{ margin: 10 }}>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Name</Table.HeaderCell>
+                      <Table.HeaderCell># Held</Table.HeaderCell>
+                      <Table.HeaderCell>Price paid</Table.HeaderCell>
+                      <Table.HeaderCell>Current Value</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
 
-            <Table.Body>
-            {yourStocks.map((trade, index) => {
-                  return <Table.Row key={index}>
-                    <Table.Cell>{trade.name}</Table.Cell>
-                    <Table.Cell>{trade.stocksHeld}</Table.Cell>
-                    <Table.Cell>${trade.pricePaid}</Table.Cell>
-                    <Table.Cell>$10,000</Table.Cell>
-                  </Table.Row>
-                })}
-            </Table.Body>
-          </Table>
-          </div>
-        </Grid.Column>
-        <Grid.Column>
-          <Header as='h1' textAlign='left'>Your Crypto</Header>
-          <div className="table-holder">
-          <Table celled inverted selectable>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Name</Table.HeaderCell>
-                <Table.HeaderCell># Held</Table.HeaderCell>
-                <Table.HeaderCell>Price paid</Table.HeaderCell>
-                <Table.HeaderCell>Current Value</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-
-            <Table.Body>
-            {yourCrypto.map((trade, index) => {
-                  return <Table.Row key={index}>
-                    <Table.Cell>{trade.name}</Table.Cell>
-                    <Table.Cell>{trade.stocksHeld}</Table.Cell>
-                    <Table.Cell>${trade.pricePaid}</Table.Cell>
-                    <Table.Cell>$10,000</Table.Cell>
-                  </Table.Row>
-                })}
-            </Table.Body>
-          </Table>
-          </div>
-        </Grid.Column>
-      </Grid.Row>
-    </Grid>
-
-    <Grid columns={2} divided>
-      <Grid.Row>
-        <Grid.Column>
-          <Header as='h2' textAlign='center'>Transaction History</Header>
-          <div className="table-holder">
-            <Table celled inverted selectable style={{ margin: 10 }}>
-              <Table.Header>
-                <Table.Row>
-                  <Table.HeaderCell>Name</Table.HeaderCell>
-                  <Table.HeaderCell>Buy/Sell</Table.HeaderCell>
-                  <Table.HeaderCell textAlign='center'>Number of Shares</Table.HeaderCell>
-                  <Table.HeaderCell>Price</Table.HeaderCell>
-                </Table.Row>
-              </Table.Header>
-                <Table.Body>
-                {tradeData.map((trade, index) => {
-                  return<Table.Row key={index}>
-                          <Table.Cell>{trade.name_of_asset}</Table.Cell>
-                          <Table.Cell>{trade.transaction_type}</Table.Cell>
-                          <Table.Cell textAlign='center'>{trade.qty_purchased}</Table.Cell>
-                          <Table.Cell>{trade.asset_price}</Table.Cell>
-                        </Table.Row>
-                  })}
-               </Table.Body>
-            </Table>
-          </div>
-        </Grid.Column>
-        <Grid.Column>
-          <img style={{ marginBottom: 40 }} src='https://www.tutorialspoint.com/tables_graphs_functions_and_sequences/images/interpreting_line_graph_example1.jpg' />
-        </Grid.Column>
-      </Grid.Row>
-    </Grid>
-  </div>
-  }
-</>
-)  
+                  <Table.Body>
+                    {yourStocks.map((trade, index) => {
+                      return <Table.Row key={index}>
+                        <Table.Cell>{trade.name}</Table.Cell>
+                        <Table.Cell>{trade.stocksHeld}</Table.Cell>
+                        <Table.Cell>${trade.pricePaid}</Table.Cell>
+                        <Table.Cell>$10,000</Table.Cell>
+                      </Table.Row>
+                    })}
+                  </Table.Body>
+                </Table>
+              </div>
+            </Grid.Column>
+            <Grid.Column>
+              <Header as='h1' textAlign='left'>Your Crypto</Header>
+              <div className="table-holder">
+                <Table celled inverted selectable>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Name</Table.HeaderCell>
+                      <Table.HeaderCell># Held</Table.HeaderCell>
+                      <Table.HeaderCell>Price paid</Table.HeaderCell>
+                      <Table.HeaderCell>Current Value</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+                    
+                  <Table.Body>
+                    {yourCrypto.map((trade, index) => {
+                      return <Table.Row key={index}>
+                        <Table.Cell>{trade.name}</Table.Cell>
+                        <Table.Cell>{trade.stocksHeld}</Table.Cell>
+                        <Table.Cell>${trade.pricePaid}</Table.Cell>
+                        <Table.Cell>$10,000</Table.Cell>
+                      </Table.Row>
+                    })}
+                  </Table.Body>
+                </Table>
+              </div>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+                  
+        <Grid columns={2} divided style={{ paddingBottom: '2em' }}>
+          <Grid.Row>
+            <Grid.Column>
+              <Header as='h2' textAlign='center'>Transaction History</Header>
+              <div className="table-holder">
+                <Table celled inverted selectable style={{ margin: 10 }}>
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Name</Table.HeaderCell>
+                      <Table.HeaderCell>Buy/Sell</Table.HeaderCell>
+                      <Table.HeaderCell textAlign='center'>Number of Shares</Table.HeaderCell>
+                      <Table.HeaderCell>Price</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>
+                    {tradeData.map((trade, index) => {
+                      return <Table.Row key={index}>
+                        <Table.Cell>{trade.name_of_asset}</Table.Cell>
+                        <Table.Cell>{trade.transaction_type}</Table.Cell>
+                        <Table.Cell textAlign='center'>{trade.qty_purchased}</Table.Cell>
+                        <Table.Cell>{trade.asset_price}</Table.Cell>
+                      </Table.Row>
+                    })}
+                  </Table.Body>
+                </Table>
+              </div>
+            </Grid.Column>
+            <Grid.Column>
+              <img style={{ marginBottom: 40 }} src='https://www.tutorialspoint.com/tables_graphs_functions_and_sequences/images/interpreting_line_graph_example1.jpg' />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </div>
+    }
+  </>
 }

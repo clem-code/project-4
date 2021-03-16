@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
-import { Button, Icon, Search, Grid, Image, Card, Table, Label, Container } from 'semantic-ui-react'
+import { Button, Grid, Image, Table, Container } from 'semantic-ui-react'
 import { XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries, VerticalGridLines } from 'react-vis'
 
 export default function Asset({ location }) {
@@ -30,6 +30,7 @@ export default function Asset({ location }) {
     }
     getMktCap()
   }, [])
+
   useEffect(() => {
     async function getCryptoMetrics() {
       const { data } = await axios.get(`https://data.messari.io/api/v1/assets/${asset}/metrics`)
@@ -40,6 +41,7 @@ export default function Asset({ location }) {
     }
     getCryptoMetrics()
   }, [])
+
   if (assetType === 'crypto') {
     useEffect(() => {
       async function getCryptoDescription() {
@@ -51,6 +53,7 @@ export default function Asset({ location }) {
       getCryptoDescription()
     }, [])
   }
+
   useEffect(() => {
     async function tableData() {
       const { data } = await axios.get(`https://finnhub.io/api/v1/stock/metric?symbol=${asset}&metric=all&token=c13rrgf48v6r3f6kt4d0`)
@@ -66,7 +69,6 @@ export default function Asset({ location }) {
     }
     ratioData()
   }, [])
-
 
   useEffect(() => {
 
@@ -87,6 +89,7 @@ export default function Asset({ location }) {
     }
 
   }, [])
+
   useEffect(() => {
     async function graphFunc1() {
       const dataPointArray = []
@@ -124,6 +127,7 @@ export default function Asset({ location }) {
       updateShowFinancials(true)
     }
   }
+
   function revealMore() {
     if (showCrypto) {
       updateShowCrypto(false)
@@ -141,11 +145,11 @@ export default function Asset({ location }) {
   if (!cryptoMetrics) {
     return null
   }
-  const hidden = { display: 'none' }
+
+  const hidden = { overflow: 'auto', maxHeight: '500px', display: 'none' }
   const revealed = { overflow: 'auto', maxHeight: 300, display: 'inline-block' }
 
   return <div>
-
     <div textAlign='center' verticalAlign='middle' style={{ padding: '2em 1em' }}>
       <Image src={assetType !== 'crypto' ? `//logo.clearbit.com/${image}` : image} size={assetType !== 'crypto' ? 'large' : 'tiny'} wrapped />
       <span><h1 textAlign='center' verticalAlign='middle'>{assetName}</h1>
@@ -165,7 +169,6 @@ export default function Asset({ location }) {
             <LineSeries color="yellow" data={xyData} />
           </XYPlot>
         </Grid.Column>
-
 
         {assetType !== 'crypto' && <Grid.Column >
           Key Ratios & Multiples
