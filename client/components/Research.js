@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import { Link, Redirect, withRouter } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { Button, Icon, Search, Grid, Image, Card, Table, Select, Divider } from 'semantic-ui-react'
 import { remove, shuffle } from 'lodash'
 import Ticker from 'react-ticker'
@@ -108,7 +108,6 @@ export default function Research() {
     cryptoImg(asset)
   }, [asset])
 
-
   useEffect(() => {
     async function fetchInfo(asset) {
       if (assetClass === 'stocks') {
@@ -145,6 +144,7 @@ export default function Research() {
     }
     fetchNews()
   }, [])
+  
   useEffect(() => {
     async function fetchData() {
       const { data } = await axios.get('https://api.twelvedata.com/price?symbol=DJI&type=Index&apikey=1222b4bc258246d498d11e610aed0baa')
@@ -207,12 +207,15 @@ export default function Research() {
     fetchData7()
     fetchData8()
   }, [])
+
   if (!company) {
     return null
   }
+
   if (!cryptoData) {
     return null
   }
+
   const cardStyle = {
     minHeight: 400,
     backgroundColor: 'teal',
@@ -243,7 +246,8 @@ export default function Research() {
         })}
       </Grid.Row>
     </Grid>
-    <Divider/>    
+    <Divider/> 
+
     <Grid textAlign="center" verticalAlign="middle" style={{ color: 'white', backgroundColor: 'black', padding: '3em 0em' }}>
       <Grid.Row>
         <Grid.Column width={6}>
@@ -301,6 +305,7 @@ export default function Research() {
       </Grid.Row>
     </Grid>
     <Divider />
+    
     <Grid textAlign="center" verticalAlign="middle" style={{ padding: '2em 0em 5em 0em' }}>
       <Grid.Row>
         <Search

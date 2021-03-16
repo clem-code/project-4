@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
-import { Header, Modal, Select, Button, Icon, Search, Grid, Image, Card, Table, Label, Container, Input, Message, Form, Divider } from 'semantic-ui-react'
+import { Header, Modal, Select, Button, Icon, Grid, Image, Table, Container, Input, Message, Form, Divider } from 'semantic-ui-react'
 export default function Trading() {
 
   const [search, updateSearch] = useState('')
@@ -30,8 +30,6 @@ export default function Trading() {
   const [showAlert, updateShowAlert] = useState(false)
 
   const token = localStorage.getItem('token')
-
-
 
   //SELLING
   useEffect(() => {
@@ -88,6 +86,7 @@ export default function Trading() {
     toggleBox()
     updateShowSell(true)
   }
+
   function alert() {
     const prompt = prompt('THIS IS BIGGER THAN YOU CAN AFFORD')
     updateShowAlert(true)
@@ -95,7 +94,6 @@ export default function Trading() {
   }
 
   //BUYING
-
   useEffect(() => {
     async function fetchUser() {
       const { data } = await axios.get('/api/profile', {
@@ -107,6 +105,7 @@ export default function Trading() {
     }
     fetchUser()
   }, [])
+
   useEffect(() => {
     async function cryptoImg(asset) {
       const { data } = await axios.get(`https://api.nomics.com/v1/currencies/ticker?key=e999ef911093392494fc15a4c67d84b4&ids=${asset}`)
@@ -227,7 +226,6 @@ export default function Trading() {
   async function placeTrade() {
     let trade
 
-
     if (showSell) {
       trade = {
         asset_price: Number(quote),
@@ -257,15 +255,17 @@ export default function Trading() {
     } catch (err) {
       console.log('SOMETHING WENT WRONG')
     }
-
   }
+
   if (!yourStocks) {
     return null
   }
+
   function cancelTrade() {
     setOpen(false)
     location.reload()
   }
+
 
   return <div>
     <div textAlign='center' verticalAlign='middle' style={{ padding: '5em 3em' }}>
@@ -273,7 +273,6 @@ export default function Trading() {
       <h3>Available Balance: ${Number(userData.wallet).toFixed(2)}</h3>
     </div>
     <Container>
-
       <Grid>
         <Grid.Row columns={2} divided>
           <Grid.Column>
@@ -422,7 +421,7 @@ export default function Trading() {
             <Header>Confirm Trade</Header>
             <p>
               We need you to confirm this trade before it is placed!
-          </p>
+            </p>
             <Table celled>
               <Table.Header>
                 <Table.Row>
@@ -449,7 +448,7 @@ export default function Trading() {
         <Modal.Actions>
           <Button color='black' onClick={cancelTrade}>
             Not this time
-        </Button>
+          </Button>
           <Button
             content="Let's do it!"
             labelPosition='right'
@@ -460,7 +459,5 @@ export default function Trading() {
         </Modal.Actions>
       </Modal>
     </Container>
-
   </div >
-
 }

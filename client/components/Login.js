@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import 'semantic-ui-css/semantic.min.css'
-
-import {
-  Button,
-  Form,
-  Grid,
-  Header,
-  Message,
-  Segment
-} from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react'
 
 
 export default function Login({ history }) {
