@@ -13,6 +13,8 @@ import {
   Segment
 } from 'semantic-ui-react'
 
+import { Link } from 'react-router-dom'
+
 export default function Home() {
 
   return <>
@@ -44,7 +46,7 @@ export default function Home() {
             marginTop: '1.5em'
           }}
         />
-        <Button primary size="huge">
+        <Button as={Link} to='/research' primary size="huge">
           Get Started
           <Icon name="right arrow" />
         </Button>

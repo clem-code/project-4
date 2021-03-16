@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link, Redirect, withRouter } from 'react-router-dom'
-import { Button, Icon, Search, Grid, Image, Card, Table, Label, Select } from 'semantic-ui-react'
-import { shuffle } from 'lodash'
+import { Button, Icon, Search, Grid, Image, Card, Table, Select, Divider } from 'semantic-ui-react'
+import { remove, shuffle } from 'lodash'
 import Ticker from 'react-ticker'
 
 
@@ -18,7 +18,7 @@ export default function Research() {
   const [id, updateId] = useState(0)
   const [userId, updateUserId] = useState(0)
   const [favourites, updateFavourites] = useState([])
-  const [image, updateImage] = useState('blackboard.com')
+  const [image, updateImage] = useState('okta.com')
   const [quote, updateQuote] = useState('')
   const [news, updateNews] = useState([])
   const [dow, updateDow] = useState('')
@@ -33,6 +33,11 @@ export default function Research() {
   const [btcC, updateBTCC] = useState('')
   const [ethC, updateETHC] = useState('')
   const [tetherC, updateTetherC] = useState('')
+  const [isFavourite, updateIsFavourite] = useState(false)
+
+
+  const token = localStorage.getItem('token')
+
 
   const assetOptions = [
     { key: 'st', value: 'stocks', text: 'Stocks' },
@@ -53,14 +58,44 @@ export default function Research() {
       updateAsset(data.symbol)
     }
   }
-  // async function get_user_id() {
-  //   const { data } = await axios.get('http://localhost:5000/api/profile')
-  //   const userId = data.id
-  //   updateUserId(userId)
-  //   const favourites = data.favourites
-  //   updateFavourites(data.favourites)
-  //   console.log(userId, favourites)
-  // }
+
+  // FAVOURITES FUNCTIONALITY
+  useEffect(() => {
+    updateIsFavourite(false)
+    async function get_user_id() {
+      const { data } = await axios.get('/api/profile', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      const userId = data.id
+      updateUserId(userId)
+      const favourites = data.favourites
+      updateFavourites(data.favourites)
+      console.log(userId, favourites)
+      let x
+      for (x in data.favourites) {
+        if (asset === data.favourites[x].symbol) {
+          console.log('this is a favourite', favourites[x].symbol)
+          updateIsFavourite(true)
+        }
+      }
+    }
+    get_user_id()
+  }, [asset])
+  async function selectFavourite() {
+    if (!isFavourite) {
+      const { data } = await axios.post(`/api/stocks/${id}/favourites/${userId}`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      console.log(id, userId, token)
+    }
+    if (isFavourite) {
+      const { data } = await axios.delete(`/api/stocks/${id}/favourites/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+    }
+  }
+  // @router.route("/stocks/<int:stock_id>/favourites/<int:user_id>", methods=["POST"])
+
   useEffect(() => {
     async function cryptoImg(asset) {
       const { data } = await axios.get(`https://api.nomics.com/v1/currencies/ticker?key=e999ef911093392494fc15a4c67d84b4&ids=${asset}`)
@@ -98,7 +133,10 @@ export default function Research() {
   useEffect(() => {
     async function fetchNews() {
       const { data } = await axios.get('https://api.nytimes.com/svc/news/v3/content/nyt/business.json?api-key=LloagDB4NUM7hAC2OOP6deCVztdY1Dvj')
-      const shuffled = _.shuffle(data.results).slice(0, 6)
+      const filtered = data.results.filter((e) => {
+        return e.multimedia !== null
+      })
+      const shuffled = _.shuffle(filtered).slice(0, 6)
       updateNews(shuffled)
     }
     fetchNews()
@@ -172,36 +210,37 @@ export default function Research() {
     return null
   }
   const cardStyle = {
-    backgroundColor: 'black',
-    border: 'solid 2px yellow',
+    minHeight: 400,
+    backgroundColor: 'teal',
+    border: 'solid 2px black'
   }
+
+
   return <div>
-
-    <h1>Discover // Research // Invest</h1>
-
-    <Grid>
+    <Grid textAlign="center" verticalAlign="middle" style={{ padding: '6em 3em 2em 3em' }}>
+      <h1>Discover // Research // Invest</h1>
       <Grid.Row columns={6}>
         {news.map((box, index) => {
           return <Grid.Column key={index}>
             <Card className="newsbox" href={box.url} target="_blank" rel="noreferrer" style={cardStyle}>
-              <Image src={`${box.thumbnail_standard}`} size='tiny' />
+              <Image src={`${box.thumbnail_standard}`} size='medium' />
               <Card.Content>
                 <Card.Header style={{ color: 'white' }}>{box.section}</Card.Header>
-                <Card.Description style={{ color: 'yellow' }}>
+                <Card.Description style={{ color: 'white' }}>
                   {box.title}
                 </Card.Description>
               </Card.Content>
-              <Card.Content extra style={{ color: 'yellow' }}>
-                <Icon name='newspaper outline' style={{ color: 'yellow' }} />
+              <Card.Content extra style={{ color: 'white' }}>
+                <Icon name='newspaper outline' style={{ color: 'white' }} />
                 Powered by the New York Times
-                </Card.Content>
+              </Card.Content>
             </Card>
           </Grid.Column>
         })}
       </Grid.Row>
     </Grid>
-
-    <Grid>
+    <Divider/>    
+    <Grid textAlign="center" verticalAlign="middle" style={{ padding: '3em 0em' }}>
       <Grid.Row>
         <Grid.Column width={6}>
           <h1>Major Stock Indices</h1>
@@ -256,76 +295,95 @@ export default function Research() {
           </Table>
         </Grid.Column>
       </Grid.Row>
+    </Grid>
+    <Divider/>
+    <Grid textAlign="center" verticalAlign="middle" style={{ padding: '2em 0em 5em 0em' }}>
       <Grid.Row>
-        <Grid.Column width={3}>
-          <Search
-            onSearchChange={(event) => updateSearch(event.target.value)} type="text" placeholder="Search Assets..."
-          />
-          <Select placeholder='Select your asset' options={assetOptions} onChange={(event) => updateAssetClass(event.target.innerText.toLowerCase())} />
-          <Button
-            content='Search'
-            onClick={searchFunc}
-          />
-        </Grid.Column>
-        {assetClass === 'stocks' && <Grid.Column width={5}>
-          <h2>Company Information</h2>
-          <Link to={{
-            pathname: `/asset/${id}`,
-            state: { assetState: asset, nameState: company.name, quoteState: quote, assetType: 'stocks', img: image }
-          }}>
-            <Image src={`//logo.clearbit.com/${image}`} size='large' wrapped />
-            <h3>Name: {company.name}</h3>
-            <h4>Share Price (USD): {quote}</h4>
-          </Link>
-          <p>Exchange: {company.exchange}</p>
-          <p>Currency: {company.currency}</p>
-          <p>Symbol: {company.ticker}</p>
-          <p>Sector: {company.finnhubIndustry}</p>
-          <p>Country: {company.country}</p>
-          <p>IPO: {company.ipo}</p>
-          <p>Website: <a target="_blank" rel="noreferrer" href={company.weburl}>{company.weburl}</a></p>
+        <Search
+          onSearchChange={(event) => updateSearch(event.target.value)} type="text" placeholder="Search Assets..." style={{ margin: '0em 1em' }}
+        />
+        <Select placeholder='Select your asset' options={assetOptions} onChange={(event) => updateAssetClass(event.target.innerText.toLowerCase())} />
+        <Button
+          color='blue'
+          content='Search'
+          onClick={searchFunc}
+          style={{ margin: '0em 2em' }}
+        />
+      </Grid.Row>
+      <Grid.Row>
+        {assetClass === 'stocks' && <Grid.Column textAlign="center" verticalAlign="middle">
+          <Grid.Row style={{ margin: '2em 0em 4em 0em' }}>
+            <h2>Company Information</h2>
+          </Grid.Row>
+          <Grid.Row columns={2} style={{ margin: '0em 5em' }}>
+            <Grid.Column>
+              <Link to={{
+                pathname: `/asset/${id}`,
+                state: { assetState: asset, nameState: company.name, quoteState: quote, assetType: 'stocks', img: image }
+              }}>
+                <Image src={`//logo.clearbit.com/${image}`} size='large' wrapped />
+                <h3>Name: {company.name}</h3>
+                <h4>Share Price (USD): {quote}</h4>
+              </Link>
+            </Grid.Column>
+            <Grid.Column>
+              <p>Exchange: {company.exchange}</p>
+              <p>Currency: {company.currency}</p>
+              <p>Symbol: {company.ticker}</p>
+              <p>Sector: {company.finnhubIndustry}</p>
+              <p>Country: {company.country}</p>
+              <p>IPO: {company.ipo}</p>
+              <p>Website: <a target="_blank" rel="noreferrer" href={company.weburl}>{company.weburl}</a></p>
+            </Grid.Column>
+          </Grid.Row>
         </Grid.Column>}
-        {assetClass === 'crypto' && <Grid.Column width={5}>
-          <h2>Coin Information</h2>
-          <Link to={{
-            pathname: `/asset/${id}`,
-            state: { assetState: asset, nameState: cryptoData.name, quoteState: cryptoData.market_data.price_usd, dataState: cryptoData, assetType: 'crypto', mktCap: cryptoData.marketcap.current_marketcap_usd, img: cryptoImg }
-          }}>
-            <Image src={cryptoImg} size='small' wrapped />
-            <h3>Name: {cryptoData.name}</h3>
-            <h4>Price (USD): {cryptoData.market_data.price_usd}</h4>
-            <h4>Price (BTC): {cryptoData.market_data.price_btc}</h4>
-          </Link>
+        {assetClass === 'crypto' && <Grid.Column textAlign="center" verticalAlign="middle">
+          <Grid.Row style={{ margin: '2em 0em 4em 0em' }}>
+            <h2>Coin Information</h2>
+          </Grid.Row>
+          <Grid.Row columns={2} style={{ margin: '0em 5em' }}>
+            <Grid.Column>
+              <Link to={{
+                pathname: `/asset/${id}`,
+                state: { assetState: asset, nameState: cryptoData.name, quoteState: cryptoData.market_data.price_usd, dataState: cryptoData, assetType: 'crypto', mktCap: cryptoData.marketcap.current_marketcap_usd, img: cryptoImg }
+              }}>
+                <Image src={cryptoImg} size='small' wrapped />
+                <h3>Name: {cryptoData.name}</h3>
+                <h4>Price (USD): {cryptoData.market_data.price_usd}</h4>
+                <h4>Price (BTC): {cryptoData.market_data.price_btc}</h4>
+              </Link>
+            </Grid.Column>
+          </Grid.Row>
         </Grid.Column>}
-        <Grid.Column width={3}>
-          <Link to={assetClass === 'stocks' ? {
-            pathname: `/asset/${id}`,
-            state: { assetState: asset, nameState: company.name, quoteState: quote, img: image, assetType: 'stocks' }
-          } : {
-            pathname: `/asset/${id}`,
-            state: { assetState: asset, nameState: cryptoData.name, quoteState: cryptoData.market_data.price_usd, dataState: cryptoData, assetType: 'crypto', mktCap: cryptoData.marketcap.current_marketcap_usd, img: cryptoImg }
-          }}><Button color='teal' animated>
-              <Button.Content visible>Learn More</Button.Content>
-              <Button.Content hidden>
-                <Icon name='chart line' />
-              </Button.Content>
-            </Button></Link>
-          <Button color='orange' animated>
-            <Button.Content visible>Favourite</Button.Content>
+      </Grid.Row>
+      <Grid.Row>
+        <Link to={assetClass === 'stocks' ? {
+          pathname: `/asset/${id}`,
+          state: { assetState: asset, nameState: company.name, quoteState: quote, img: image, assetType: 'stocks' }
+        } : {
+          pathname: `/asset/${id}`,
+          state: { assetState: asset, nameState: cryptoData.name, quoteState: cryptoData.market_data.price_usd, dataState: cryptoData, assetType: 'crypto', mktCap: cryptoData.marketcap.current_marketcap_usd, img: cryptoImg }
+        }}><Button color='teal' animated style={{ margin: '0em 1em' }}>
+            <Button.Content visible>Learn More</Button.Content>
             <Button.Content hidden>
-              <Icon name='star' />
+              <Icon name='chart line' />
+            </Button.Content>
+          </Button></Link>
+        <Button color='orange' animated style={{ margin: '0em 1em' }}>
+          <Button.Content visible>Favourite</Button.Content>
+          <Button.Content hidden>
+            <Icon name='star' />
+          </Button.Content>
+        </Button>
+        <Link to={'/trading'}>
+          <Button color='purple' animated style={{ margin: '0em 1em' }}>
+            <Button.Content visible>Trade</Button.Content>
+            <Button.Content hidden>
+              <Icon name='handshake outline' />
             </Button.Content>
           </Button>
-          <Link to={'/trading'}>
-            <Button color='purple' animated>
-              <Button.Content visible>Trade</Button.Content>
-              <Button.Content hidden>
-                <Icon name='handshake outline' />
-              </Button.Content>
-            </Button>
-          </Link>
-        </Grid.Column>
-      </Grid.Row>
+        </Link>
+      </Grid.Row> 
     </Grid>
   </div >
 }

@@ -35,19 +35,16 @@ export default function Login({ history }) {
   }
 
   async function handleSubmit(event) {
-    console.log(formData)
     event.preventDefault()
     try {
       const { data } = await axios.post('/api/login', formData)
       console.log(data)
 
       if (localStorage) {
-        console.log(localStorage)
         localStorage.setItem('token', data.token)
         const token = data.token
         const payloadAsString = atob(token.split('.')[1])
         const payloadAsObject = JSON.parse(payloadAsString)
-        console.log('LOOK HERE', payloadAsObject)
         const userID = payloadAsObject.sub
         console.log('user ID', userID)
       }
@@ -59,7 +56,7 @@ export default function Login({ history }) {
 
   return <>
     <div className="login">
-      <Grid textAlign="center" verticalAlign="middle" style={{ paddingTop: 80, paddingBottom: 80 }}>
+      <Grid textAlign="center" verticalAlign="middle" style={{ minHeight: 750, paddingTop: 80, paddingBottom: 80 }}>
         <Grid.Column style={{ maxWidth: 500 }}>
           <Header as="h2" color="teal" textAlign="center">
             Log in to your account
