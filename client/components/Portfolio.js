@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Grid, Table, Header, Container, Loader } from 'semantic-ui-react'
+import { Grid, Image } from 'semantic-ui-react'
+import { Table, Header, Statistic, Container, Loader } from 'semantic-ui-react'
 
 export default function Portfolio() {
 
@@ -28,17 +29,17 @@ export default function Portfolio() {
 
   function filterStocks() {
     return tradeData.filter(trade => {
-      if (trade.asset_type === 'stocks') {
-        return trade
-      }
+        if (trade.asset_type === 'stocks') {
+          return trade
+        }
     })
   }
 
   function filterCrypto() {
     return tradeData.filter(trade => {
-      if (trade.asset_type === 'crypto') {
-        return trade
-      }
+        if (trade.asset_type === 'crypto') {
+          return trade
+        }
     })
   }
 
