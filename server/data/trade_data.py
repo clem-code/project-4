@@ -2,7 +2,7 @@ from models.trade import Trade
 
 list_trades = [
     Trade(
-        name_of_asset="aapl",
+        name_of_asset="AAPL",
         asset_price=50,
         qty_purchased=1,
         total_trade_value=50,
@@ -12,7 +12,7 @@ list_trades = [
         asset_type='stocks'
     ),
     Trade(
-        name_of_asset="aapl",
+        name_of_asset="AAPL",
         asset_price=50,
         qty_purchased=3,
         total_trade_value=150,
@@ -22,7 +22,7 @@ list_trades = [
         asset_type='stocks'
     ),
     Trade(
-        name_of_asset="goog",
+        name_of_asset="GOOG",
         asset_price=100,
         qty_purchased=1,
         total_trade_value=100,
