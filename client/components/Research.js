@@ -18,7 +18,7 @@ export default function Research() {
   const [id, updateId] = useState(0)
   const [userId, updateUserId] = useState(0)
   const [favourites, updateFavourites] = useState([])
-  const [image, updateImage] = useState('blackboard.com')
+  const [image, updateImage] = useState('okta.com')
   const [quote, updateQuote] = useState('')
   const [news, updateNews] = useState([])
   const [dow, updateDow] = useState('')
@@ -33,6 +33,11 @@ export default function Research() {
   const [btcC, updateBTCC] = useState('')
   const [ethC, updateETHC] = useState('')
   const [tetherC, updateTetherC] = useState('')
+  const [isFavourite, updateIsFavourite] = useState(false)
+
+
+  const token = localStorage.getItem('token')
+
 
   const assetOptions = [
     { key: 'st', value: 'stocks', text: 'Stocks' },
@@ -53,14 +58,44 @@ export default function Research() {
       updateAsset(data.symbol)
     }
   }
-  // async function get_user_id() {
-  //   const { data } = await axios.get('http://localhost:5000/api/profile')
-  //   const userId = data.id
-  //   updateUserId(userId)
-  //   const favourites = data.favourites
-  //   updateFavourites(data.favourites)
-  //   console.log(userId, favourites)
-  // }
+
+  // FAVOURITES FUNCTIONALITY
+  useEffect(() => {
+    updateIsFavourite(false)
+    async function get_user_id() {
+      const { data } = await axios.get('/api/profile', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      const userId = data.id
+      updateUserId(userId)
+      const favourites = data.favourites
+      updateFavourites(data.favourites)
+      console.log(userId, favourites)
+      let x
+      for (x in data.favourites) {
+        if (asset === data.favourites[x].symbol) {
+          console.log('this is a favourite', favourites[x].symbol)
+          updateIsFavourite(true)
+        }
+      }
+    }
+    get_user_id()
+  }, [asset])
+  async function selectFavourite() {
+    if (!isFavourite) {
+      const { data } = await axios.post(`/api/stocks/${id}/favourites/${userId}`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      console.log(id, userId, token)
+    }
+    if (isFavourite) {
+      const { data } = await axios.delete(`/api/stocks/${id}/favourites/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+    }
+  }
+  // @router.route("/stocks/<int:stock_id>/favourites/<int:user_id>", methods=["POST"])
+
   useEffect(() => {
     async function cryptoImg(asset) {
       const { data } = await axios.get(`https://api.nomics.com/v1/currencies/ticker?key=e999ef911093392494fc15a4c67d84b4&ids=${asset}`)
@@ -310,7 +345,7 @@ export default function Research() {
                 <Icon name='chart line' />
               </Button.Content>
             </Button></Link>
-          <Button color='orange' animated>
+          <Button color='orange' animated onClick={selectFavourite}>
             <Button.Content visible>Favourite</Button.Content>
             <Button.Content hidden>
               <Icon name='star' />
