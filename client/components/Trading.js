@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
-import { Header, Modal, Select, Button, Icon, Search, Grid, Image, Card, Table, Label, Container, Input, Message, Form } from 'semantic-ui-react'
+import { Header, Modal, Select, Button, Icon, Search, Grid, Image, Card, Table, Label, Container, Input, Message, Form, Divider } from 'semantic-ui-react'
 export default function Trading() {
 
   const [search, updateSearch] = useState('')
@@ -9,26 +9,28 @@ export default function Trading() {
   const [assetClass, updateAssetClass] = useState('stocks')
   const [cryptoName, updateCryptoName] = useState('')
   const [stockName, updateStockName] = useState('')
-  const [price, updatePrice] = useState({})
   const [id, updateId] = useState(0)
   const [userID, updateUserId] = useState('')
   const [userWallet, updateWallet] = useState('')
   const [cryptoImg, updateCryptoImg] = useState('https://cryptoicons.org/api/icon/eth/200')
-  const [image, updateImage] = useState('blackboard.com')
+  const [image, updateImage] = useState('okta.com')
   const [quote, updateQuote] = useState('')
   const [tradeQTY, updateTradeQTY] = useState(0)
   const [tradeValue, updateTradeValue] = useState(0)
   const [showTrade, updateShowTrade] = useState(false)
+  const [showConfirm, updateShowConfirm] = useState(false)
   const [open, setOpen] = useState(false)
-  const [tradeData, updateTradeData] = useState({})
+  const [favouritesData, updateFavouritesData] = useState([])
   const [userData, updateUserData] = useState({})
   const [tradeData1, updateTradeData1] = useState([])
   const [yourStocks, updateYourStocks] = useState(null)
   const [inPortfolio, updateInPortfolio] = useState(false)
-  const [sellAsset, updateSellAsset] = useState(false)
   const [showSell, updateShowSell] = useState(false)
   const [maxSell, updateMaxSell] = useState(0)
+  const [showAlert, updateShowAlert] = useState(false)
+
   const token = localStorage.getItem('token')
+
 
 
   //SELLING
@@ -39,7 +41,8 @@ export default function Trading() {
       })
       updateUserData(data)
       updateTradeData1(data.trades)
-      console.log(data, 'this is fetch data 1')
+      updateFavouritesData(data.favourites)
+      console.log(data.favourites, 'this is fetch data 1')
     }
     fetchData()
 
@@ -65,43 +68,30 @@ export default function Trading() {
 
   function isInPortfolio(asset) {
     console.log('isInPortfolio fired')
-    const filtered = yourStocks.filter((stock)=>{
-      if (stock.name === asset){
+    const filtered = yourStocks.filter((stock) => {
+      if (stock.name === asset) {
         return stock
       }
     })
-    if(filtered.length > 0){
-    console.log(filtered, 'is in your portfolio')
-    updateInPortfolio(true)
-    console.log(' this is max sell',Number(filtered[0].stocksHeld))
-    updateMaxSell(Number(filtered[0].stocksHeld))
-  }else{
+    if (filtered.length > 0) {
+      console.log(filtered, 'is in your portfolio')
+      updateInPortfolio(true)
+      console.log(' this is max sell', Number(filtered[0].stocksHeld))
+      updateMaxSell(Number(filtered[0].stocksHeld))
+    } else {
       console.log('this is not in your portfolio')
     }
-    // {name: "LINK", stocksHeld: 500}
   }
 
-  useEffect(() => {
-    async function fetchPrices() {
-      const symbolSearch = sellAsset.toUpperCase()
-      console.log(symbolSearch)
-      const { data } = await axios.get(`/api/stocks/${symbolSearch}`)
-      const attempt = data
-      console.log(attempt)
-      if (!attempt) {
-        const { data } = await axios.get(`/api/crypto/${symbolSearch}`)
-        const attempt2 = data
-        console.log(attempt2)
-
-      }
-    }
-    fetchPrices()
-  }, [sellAsset])
-
-  function primeSell(){
+  function primeSell() {
     console.log('primesell fired')
     toggleBox()
     updateShowSell(true)
+  }
+  function alert() {
+    const prompt = prompt('THIS IS BIGGER THAN YOU CAN AFFORD')
+    updateShowAlert(true)
+    alert(prompt)
   }
 
   //BUYING
@@ -127,11 +117,9 @@ export default function Trading() {
   function toggleBox() {
     showTrade ? updateShowTrade(false) : updateShowTrade(true)
   }
-  function toggleTrade() {
-    showSell ? updateShowSell(false) : updateShowSell(true)
-  }
+
   async function searchFunc() {
-    event.preventDefault()
+    // event.preventDefault()
     console.log(search)
     const searchTerm = search.toLowerCase()
     const symbolSearch = searchTerm.toUpperCase()
@@ -155,8 +143,8 @@ export default function Trading() {
     }
 
   }
-  async function companyLogo(){
-    const { data } = await axios.get(`https://finnhub.io/api/v1/stock/profile2?symbol=${asset}&token=c13rrgf48v6r3f6kt4d0`)  
+  async function companyLogo() {
+    const { data } = await axios.get(`https://finnhub.io/api/v1/stock/profile2?symbol=${asset}&token=c13rrgf48v6r3f6kt4d0`)
     const src = data.weburl.slice(8, data.weburl.length - 1).replace('www.', '')
     updateImage(src)
   }
@@ -186,8 +174,21 @@ export default function Trading() {
     { key: 'cr', value: 'crypto', text: 'Crypto' }
   ]
   function tradeFunc() {
+    if (inPortfolio && showSell) {
+      if (tradeQTY > maxSell) {
+        updateShowAlert(true)
+        alert()
+        location.reload()
+      }
+    } else if (!showSell && ((tradeQTY * quote) > userWallet)) {
+      updateShowAlert(true)
+      console.log('THIS IS BIGGER THAN YOU CAN AFFORD')
+      alert()
+    }
     console.log(tradeQTY * quote)
-    updateTradeValue(tradeQTY * quote)
+    updateTradeValue(Number(tradeQTY * quote).toFixed(2))
+    updateShowConfirm(true)
+    updateShowAlert(false)
   }
   function finalTrade() {
 
@@ -202,11 +203,11 @@ export default function Trading() {
   const revealed = { display: 'inline-block' }
   async function walletAdjust() {
     let qtyAfterTrade
-    if (showSell){
+    if (showSell) {
       console.log('this is wallet adjust for a sell order')
-       qtyAfterTrade = userWallet + tradeValue
+      qtyAfterTrade = userWallet + tradeValue
     } else {
-       qtyAfterTrade = userWallet - tradeValue
+      qtyAfterTrade = userWallet - tradeValue
       console.log('this is wallet adjust for a buy order')
     }
     console.log(qtyAfterTrade)
@@ -225,7 +226,9 @@ export default function Trading() {
   }
   async function placeTrade() {
     let trade
-    if (showSell){
+
+
+    if (showSell) {
       trade = {
         asset_price: Number(quote),
         qty_purchased: Number(tradeQTY * -1),
@@ -233,7 +236,7 @@ export default function Trading() {
         transaction_type: 'sell',
         name_of_asset: asset,
         asset_type: assetClass
-       }
+      }
     } else {
       trade = {
         asset_price: Number(quote),
@@ -245,7 +248,7 @@ export default function Trading() {
       }
     }
     console.log('this trade is placed', trade)
-    
+
     try {
       const { data } = await axios.post('/api/trades', trade, {
         headers: { Authorization: `Bearer ${token}` }
@@ -259,19 +262,71 @@ export default function Trading() {
   if (!yourStocks) {
     return null
   }
+  function cancelTrade() {
+    setOpen(false)
+    location.reload()
+  }
 
   return <div>
-    Trading Page
-   
-    <h2>Available Balance: ${Number(userData.wallet).toFixed(2)}</h2>
-    
+    <div textAlign='center' verticalAlign='middle' style={{ padding: '5em 3em' }}>
+      <h2><i>Time To Trade</i></h2>
+      <h3>Available Balance: ${Number(userData.wallet).toFixed(2)}</h3>
+    </div>
+    <Container>
+
+      <Grid>
+        <Grid.Row columns={2} divided>
+          <Grid.Column>
+            <Header as='h3' textAlign='left'>Your Favourites</Header>
+            <Table celled inverted selectable>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell>Name</Table.HeaderCell>
+                  <Table.HeaderCell>Symbol</Table.HeaderCell>
+                  <Table.HeaderCell>Asset Class</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {favouritesData.map((trade, index) => {
+                  return <Table.Row key={index}>
+                    <Table.Cell>{trade.name}</Table.Cell>
+                    <Table.Cell>{trade.symbol}</Table.Cell>
+                    <Table.Cell>{trade.type_of}</Table.Cell>
+                  </Table.Row>
+                })}
+              </Table.Body>
+            </Table>
+          </Grid.Column>
+          <Grid.Column>
+            <Header as='h3' textAlign='left'>Your Portfolio</Header>
+            <Table celled inverted selectable>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell>Symbol</Table.HeaderCell>
+                  <Table.HeaderCell>Quantity Held</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {yourStocks.map((trade, index) => {
+                  return <Table.Row key={index}>
+                    <Table.Cell>{trade.name}</Table.Cell>
+                    <Table.Cell>{trade.stocksHeld}</Table.Cell>
+                  </Table.Row>
+                })}
+              </Table.Body>
+            </Table>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </Container>
+    <Divider />
     <Container>
       <div><Select placeholder='Select your asset' options={assetOptions} onChange={(event) => updateAssetClass(event.target.innerText.toLowerCase())} /></div>
-
-      <div><Input onChange={(event) => updateSearch(event.target.value)} type="text" placeholder='Search...' value={search} /></div>
-
+      <Divider />
+      <div><Input onChange={(event) => updateSearch(event.target.value)} type="text" placeholder='Search By Ticker Symbol...' value={search} /></div>
+      <Divider />
       <div><Button primary onClick={searchFunc}>Search</Button></div>
-
+      <Divider />
       {assetClass === 'stocks' && <Grid.Column width={5}>
         <h2>Company Information</h2>
         <Image size='large' src={`//logo.clearbit.com/${image}`} wrapped />
@@ -286,10 +341,11 @@ export default function Trading() {
         <h4>Symbol: {asset}</h4>
         <h4>Price (USD): {quote}</h4>
       </Grid.Column>}
-
+      <Divider />
       <Button secondary onClick={toggleBox}>Buy</Button>
       {inPortfolio && <Button primary onClick={primeSell}>Sell</Button>}
     </Container>
+    <Divider />
     <Container style={showTrade ? revealed : hidden}>
       <Message
         attached
@@ -328,8 +384,11 @@ export default function Trading() {
           />
 
         </Form.Group>
-        <Button secondary onClick={tradeFunc}>Confirm Order</Button>
-        <Table celled>
+        <Divider />
+        <Button color='teal' onClick={tradeFunc}>Confirm Order</Button>
+        {showAlert && <span style={{ color: 'red' }}><i>Sorry But You Cannot Make That Trade</i></span>}
+        <Divider />
+        <Table celled style={showConfirm ? revealed : hidden}>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell>Asset</Table.HeaderCell>
@@ -355,7 +414,7 @@ export default function Trading() {
         onClose={() => setOpen(false)}
         onOpen={() => setOpen(true)}
         open={open}
-        trigger={<Button>Submit Trade</Button>}
+        trigger={showConfirm && <Button primary>Submit Trade</Button>}
       >
         <Modal.Header><Icon name='money bill alternate' /></Modal.Header>
         <Modal.Content mage>
@@ -364,11 +423,31 @@ export default function Trading() {
             <p>
               We need you to confirm this trade before it is placed!
           </p>
+            <Table celled>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell>Asset</Table.HeaderCell>
+                  <Table.HeaderCell>Price</Table.HeaderCell>
+                  <Table.HeaderCell>Trade Quantity</Table.HeaderCell>
+                  <Table.HeaderCell>Trade Value</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                <Table.Row>
+                  <Table.Cell>
+                    {assetClass === 'stocks' ? `${stockName}` : `${cryptoName}`}
+                  </Table.Cell>
+                  <Table.Cell>{quote}</Table.Cell>
+                  <Table.Cell>{tradeQTY}</Table.Cell>
+                  <Table.Cell>{tradeValue}</Table.Cell>
+                </Table.Row>
+              </Table.Body>
+            </Table>
 
           </Modal.Description>
         </Modal.Content>
         <Modal.Actions>
-          <Button color='black' onClick={() => setOpen(false)}>
+          <Button color='black' onClick={cancelTrade}>
             Not this time
         </Button>
           <Button
@@ -382,6 +461,6 @@ export default function Trading() {
       </Modal>
     </Container>
 
-  </div>
+  </div >
 
 }

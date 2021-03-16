@@ -72,11 +72,11 @@ export default function Asset({ location }) {
 
     async function graphFunc() {
       const { data } = await axios.get(`http://api.marketstack.com/v1/eod?access_key=b423407c1ef7cdb1569a2f04fc263513&symbols=${asset}`)
-      updateGraphData(data.data)
+      updateGraphData(data.data.slice(0, 90))
     }
     async function cryptoGraphFunc() {
-      const { data } = await axios.get(`https://data.messari.io/api/v1/assets/${asset}/metrics/price/time-series?start=2021-01-01&interval=1d`)
-      const cryptoTimeSeries = data.data.values.reverse()
+      const { data } = await axios.get(`https://data.messari.io/api/v1/assets/${asset}/metrics/price/time-series?start=2020-12-01&interval=1d`)
+      const cryptoTimeSeries = data.data.values.reverse().slice(0, 90)
       updateGraphData(cryptoTimeSeries)
 
     }
@@ -145,40 +145,45 @@ export default function Asset({ location }) {
   const revealed = { overflow: 'auto', maxHeight: 300, display: 'inline-block' }
 
   return <div>
-    <h1>{assetName}</h1>
-    <Image src={assetType !== 'crypto' ? `//logo.clearbit.com/${image}` : image} size={assetType !== 'crypto' ? 'large' : 'tiny'} wrapped />
-    <h3>Share Price (USD): {Number(quote).toFixed(2)}</h3>
-    <h3>Market Capitalization (USD) {assetType === 'crypto' ? location.state.mktCap : Number(mktCap).toFixed(2)}</h3>
-    <Grid>
-      <Grid.Row columns={2}>
-        <Grid.Column>
-          <XYPlot height={500} width={500} xDomain={[Number(`${xyDataParam}`), 0]}  >
+
+    <div textAlign='center' verticalAlign='middle' style={{ padding: '2em 1em' }}>
+      <Image  src={assetType !== 'crypto' ? `//logo.clearbit.com/${image}` : image} size={assetType !== 'crypto' ? 'large' : 'tiny'} wrapped />
+      <span><h1 textAlign='center' verticalAlign='middle'>{assetName}</h1>
+      <h4 style={{ padding: '0.2em 0.05em' }}>Share Price (USD): {Number(quote).toFixed(2)}</h4>
+      <h4 style={{ padding: '0.2em 0.05em' }}>Market Capitalization (USD) {assetType === 'crypto' ? location.state.mktCap : Number(mktCap).toFixed(2)}</h4>
+      </span>
+    </div>
+    
+    <Grid style={{ padding: '2em 1em' }} >
+      <Grid.Row columns={2} style={{ padding: '2em 1em' }} >
+        <Grid.Column color='teal'>
+          <XYPlot height={500} width={500} xDomain={[Number(`${xyDataParam}`), 0]} color='teal'>
             <VerticalGridLines />
             <HorizontalGridLines />
-            <XAxis title='Three Month Performance' />
+            <XAxis title='90 Day Performance' />
             <YAxis title='Asset Price (USD)' style={{ fontSize: '10px' }} />
-            <LineSeries color="purple" data={xyData} />
+            <LineSeries color="yellow" data={xyData} />
           </XYPlot>
         </Grid.Column>
 
 
-        {assetType !== 'crypto' && <Grid.Column>
+        {assetType !== 'crypto' && <Grid.Column >
           Key Ratios & Multiples
-          <Container style={revealed}>
+          <Container style={revealed} >
             <Grid >
-              <Grid.Row >
+              <Grid.Row style={{ padding: '2em 1em' }} >
                 {ratios.map((data, index) => {
                   if (data[1] !== null && data[1] !== 0)
                     return <><Grid.Column key={index} width={3} >
                       < Table celled >
-                        <Table.Header>
-                          <Table.Row>
-                            <Table.HeaderCell style={{ fontSize: '12px' }}>{data[0]}</Table.HeaderCell>
+                        <Table.Header >
+                          <Table.Row >
+                            <Table.HeaderCell style={{ fontSize: '12px' }}>{data[0]} </Table.HeaderCell>
                           </Table.Row>
-                        </Table.Header>
-                        <Table.Body>
-                          <Table.Row>
-                            <Table.Cell>
+                        </Table.Header >
+                        <Table.Body >
+                          <Table.Row >
+                            <Table.Cell >
                               {Number(data[1]).toFixed(2)}
                             </Table.Cell>
                           </Table.Row>
@@ -196,22 +201,22 @@ export default function Asset({ location }) {
           <h4>Description</h4>
           <Container style={revealed}>{cryptoDescription}</Container>
           <h4>Metrics</h4>
-          <Container style={revealed}>
-            <Grid>
-              <Grid.Row>
+          <Container style={revealed} >
+            <Grid >
+              <Grid.Row style={{ padding: '2em 1em' }} >
                 {cryptoMetrics.map((data, index) => {
                   if (data[1] !== null && data[1] !== 0)
                     return <div key={index}>
                       <Grid.Column key={index} width={3} >
                         < Table celled >
-                          <Table.Header>
-                            <Table.Row>
-                              <Table.HeaderCell>{data[0]}</Table.HeaderCell>
+                          <Table.Header >
+                            <Table.Row >
+                              <Table.HeaderCell >{data[0]}</Table.HeaderCell>
                             </Table.Row>
-                          </Table.Header>
-                          <Table.Body>
-                            <Table.Row>
-                              <Table.Cell>
+                          </Table.Header >
+                          <Table.Body >
+                            <Table.Row >
+                              <Table.Cell >
                                 {data[1]}
                               </Table.Cell>
                             </Table.Row>
