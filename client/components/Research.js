@@ -240,7 +240,7 @@ export default function Research() {
       </Grid.Row>
     </Grid>
     <Divider/>    
-    <Grid textAlign="center" verticalAlign="middle" style={{ padding: '3em 0em' }}>
+    <Grid textAlign="center" verticalAlign="middle" style={{ color: 'white', backgroundColor: 'black', padding: '3em 0em' }}>
       <Grid.Row>
         <Grid.Column width={6}>
           <h1>Major Stock Indices</h1>
@@ -312,21 +312,21 @@ export default function Research() {
       </Grid.Row>
       <Grid.Row>
         {assetClass === 'stocks' && <Grid.Column textAlign="center" verticalAlign="middle">
-          <Grid.Row style={{ margin: '2em 0em 4em 0em' }}>
+          <Grid.Row style={{ margin: '2em 0em' }}>
             <h2>Company Information</h2>
           </Grid.Row>
           <Grid.Row columns={2} style={{ margin: '0em 5em' }}>
-            <Grid.Column>
+            <Grid.Column style={{ padding: '2em 0em' }}>
               <Link to={{
                 pathname: `/asset/${id}`,
                 state: { assetState: asset, nameState: company.name, quoteState: quote, assetType: 'stocks', img: image }
               }}>
-                <Image src={`//logo.clearbit.com/${image}`} size='large' wrapped />
+                <Image src={`//logo.clearbit.com/${image}`} size='large' wrapped textalign="center" verticalAlign="middle"/>
                 <h3>Name: {company.name}</h3>
                 <h4>Share Price (USD): {quote}</h4>
               </Link>
             </Grid.Column>
-            <Grid.Column>
+            <Grid.Column textAlign="center" verticalAlign="middle">
               <p>Exchange: {company.exchange}</p>
               <p>Currency: {company.currency}</p>
               <p>Symbol: {company.ticker}</p>
