@@ -231,14 +231,17 @@ export default function Trading() {
         qty_purchased: Number(tradeQTY * -1),
         total_trade_value: Number(tradeValue),
         transaction_type: 'sell',
-        name_of_asset: asset }
+        name_of_asset: asset,
+        asset_type: assetClass
+       }
     } else {
       trade = {
         asset_price: Number(quote),
         qty_purchased: Number(tradeQTY),
         total_trade_value: Number(tradeValue),
         transaction_type: 'buy',
-        name_of_asset: asset
+        name_of_asset: asset,
+        asset_type: assetClass
       }
     }
     console.log('this trade is placed', trade)
