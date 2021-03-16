@@ -155,10 +155,17 @@ export default function Trading() {
     }
 
   }
+  async function companyLogo(){
+    const { data } = await axios.get(`https://finnhub.io/api/v1/stock/profile2?symbol=${asset}&token=c13rrgf48v6r3f6kt4d0`)  
+    const src = data.weburl.slice(8, data.weburl.length - 1).replace('www.', '')
+    updateImage(src)
+  }
   useEffect(() => {
     async function fetchQuote(asset) {
       const { data } = await axios.get(`https://finnhub.io/api/v1/quote?symbol=${asset}&token=c13rrgf48v6r3f6kt4d0`)
       updateQuote(data.c)
+      companyLogo()
+
     }
     async function fetchQuoteCrypto(cryptoName) {
       const { data } = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${cryptoName}&vs_currencies=usd&include_24hr_change=true`)
@@ -224,14 +231,17 @@ export default function Trading() {
         qty_purchased: Number(tradeQTY * -1),
         total_trade_value: Number(tradeValue),
         transaction_type: 'sell',
-        name_of_asset: asset }
+        name_of_asset: asset,
+        asset_type: assetClass
+       }
     } else {
       trade = {
         asset_price: Number(quote),
         qty_purchased: Number(tradeQTY),
         total_trade_value: Number(tradeValue),
         transaction_type: 'buy',
-        name_of_asset: asset
+        name_of_asset: asset,
+        asset_type: assetClass
       }
     }
     console.log('this trade is placed', trade)

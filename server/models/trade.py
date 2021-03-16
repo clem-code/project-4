@@ -13,5 +13,6 @@ class Trade(db.Model, BaseModel):
     qty_purchased = db.Column(db.Float, nullable=False)
     total_trade_value = db.Column(db.Float, nullable=False)
     transaction_type = db.Column(db.String(10), nullable=False)
+    asset_type = db.Column(db.String(10), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"))
     stock_id = db.Column(db.Integer, db.ForeignKey("stocks.id", ondelete="CASCADE"))

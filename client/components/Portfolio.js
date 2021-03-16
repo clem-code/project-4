@@ -39,9 +39,6 @@ export default function Portfolio() {
     updateYourStocks(groupedTrades)
   }, [tradeData])
 
-  console.log('YOUR STOCKS>', yourStocks)
-  console.log('hello')
-
   return (
 
     <>
@@ -67,12 +64,9 @@ export default function Portfolio() {
               <Statistic.Value>$56,000</Statistic.Value>
               <Statistic.Label>biggest trade</Statistic.Label>
             </Statistic>
-
           </Container>
-
         </Grid.Column>
       </Grid.Row>
-
       <Grid.Row columns={2} divided>
         <Grid.Column>
           <Header as='h1' textAlign='left'>Your Stocks</Header>
@@ -158,7 +152,7 @@ export default function Portfolio() {
           </div>
         </Grid.Column>
         <Grid.Column>
-          <img src='https://www.tutorialspoint.com/tables_graphs_functions_and_sequences/images/interpreting_line_graph_example1.jpg' />
+          <img style={{ marginBottom: 40 }} src='https://www.tutorialspoint.com/tables_graphs_functions_and_sequences/images/interpreting_line_graph_example1.jpg' />
         </Grid.Column>
       </Grid.Row>
     </Grid>
