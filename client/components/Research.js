@@ -83,15 +83,19 @@ export default function Research() {
   }, [asset])
   async function selectFavourite() {
     if (!isFavourite) {
+      console.log('going to post a favourite')
       const { data } = await axios.post(`/api/stocks/${id}/favourites/${userId}`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       })
       console.log(id, userId, token)
+      location.reload()
     }
     if (isFavourite) {
+      console.log('going to delete a favourite')
       const { data } = await axios.delete(`/api/stocks/${id}/favourites/${userId}`, {
         headers: { Authorization: `Bearer ${token}` }
       })
+      location.reload()
     }
   }
   // @router.route("/stocks/<int:stock_id>/favourites/<int:user_id>", methods=["POST"])
@@ -218,7 +222,7 @@ export default function Research() {
 
   return <div>
     <Grid textAlign="center" verticalAlign="middle" style={{ padding: '6em 3em 2em 3em' }}>
-      <h1>Discover // Research // Invest</h1>
+      <h1><i>Discover // Research // Invest</i></h1>
       <Grid.Row columns={6}>
         {news.map((box, index) => {
           return <Grid.Column key={index}>
@@ -296,7 +300,7 @@ export default function Research() {
         </Grid.Column>
       </Grid.Row>
     </Grid>
-    <Divider/>
+    <Divider />
     <Grid textAlign="center" verticalAlign="middle" style={{ padding: '2em 0em 5em 0em' }}>
       <Grid.Row>
         <Search
@@ -363,27 +367,13 @@ export default function Research() {
         } : {
           pathname: `/asset/${id}`,
           state: { assetState: asset, nameState: cryptoData.name, quoteState: cryptoData.market_data.price_usd, dataState: cryptoData, assetType: 'crypto', mktCap: cryptoData.marketcap.current_marketcap_usd, img: cryptoImg }
-        }}><Button color='teal' animated style={{ margin: '0em 1em' }}>
-            <Button.Content visible>Learn More</Button.Content>
-            <Button.Content hidden>
-              <Icon name='chart line' />
-            </Button.Content>
-          </Button></Link>
-        <Button color='orange' animated style={{ margin: '0em 1em' }}>
-          <Button.Content visible>Favourite</Button.Content>
-          <Button.Content hidden>
-            <Icon name='star' />
-          </Button.Content>
-        </Button>
-        <Link to={'/trading'}>
-          <Button color='purple' animated style={{ margin: '0em 1em' }}>
-            <Button.Content visible>Trade</Button.Content>
-            <Button.Content hidden>
-              <Icon name='handshake outline' />
-            </Button.Content>
-          </Button>
+        }}><Button color='teal' style={{ margin: '0.5em 0.5em', textAlign: 'left' }} content='Learn More' />
         </Link>
-      </Grid.Row> 
+        <Button color={isFavourite ? 'red' : 'yellow'} style={{ margin: '0.5em 0.5em', textAlign: 'center' }} content={isFavourite ? 'Delete Favourite' : 'Add Favourite'} onClick={selectFavourite} />
+        <Link to={'/trading'}>
+          <Button color='purple' style={{ margin: '0.5em 0.5em', textAlign: 'right' }} content='Trade' />
+        </Link>
+      </Grid.Row>
     </Grid>
   </div >
 }
