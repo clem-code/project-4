@@ -21,10 +21,13 @@ export default function Home() {
     <Segment
       inverted
       textAlign="center"
-      style={{ minHeight: 350, padding: '1em 0em', paddingBottom: 80 }}
+      style={{
+        minHeight: 350, padding: '1em 0em', paddingBottom: 80,
+      }}
       vertical
     >
-      <Container text>
+      <Container text
+      >
         <Header
           as="h1"
           content="FOLIO"
@@ -88,8 +91,13 @@ export default function Home() {
       </Grid>
     </Segment>
     <Segment style={{ padding: '0em' }} vertical>
-      <Grid celled="internally" columns="equal" stackable>
+      <Grid celled="internally" columns="equal" stackable verticalAlign="middle">
         <Grid.Row textAlign="center">
+          <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
+            <p style={{ fontSize: '1.33em' }}>
+              <Image src="https://image.freepik.com/free-vector/digital-bitcoin-technology-concept-background-design_1017-30485.jpg" alt="bitcoin graphic" />
+            </p>
+          </Grid.Column>
           <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
             <Header as="h3" style={{ fontSize: '2em' }}>
               Buy and sell at the click of a button
@@ -98,31 +106,19 @@ export default function Home() {
               Folio provides a seamless trading experience...
             </p>
           </Grid.Column>
-          <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
-            <Header as="h3" style={{ fontSize: '2em' }}>
-              I should not have gone with their competitor.
-            </Header>
-            <p style={{ fontSize: '1.33em' }}>
-              <Image avatar src="" alt="image" />
-              <b>Nan</b> Chief Fun Officer Acme Toys
-            </p>
-          </Grid.Column>
+
         </Grid.Row>
       </Grid>
     </Segment>
     <Segment style={{ padding: '8em 0em' }} vertical>
       <Container text>
         <Header as="h3" style={{ fontSize: '2em' }}>
-          Breaking The Grid, Grabs Your Attention
-        </Header>
+          Nothing beats the Folio Experience        </Header>
         <p style={{ fontSize: '1.33em' }}>
-          Instead of focusing on content creation and hard work, we have learned
-          how to master the art of doing nothing by providing massive amounts of
-          whitespace and generic content that can seem massive, monolithic and
-          worth your attention.
+          No red tape, no delays. Just the best data and the lastest market data at your finger tips. All supported by state-of-the-art infrastructure.
         </p>
-        <Button as="a" size="large">
-          Read More
+        <Button as={Link} to='/register' size="large" color='teal'>
+          Just sign-up and dive in...
         </Button>
         <Divider
           as="h4"
@@ -130,19 +126,14 @@ export default function Home() {
           horizontal
           style={{ margin: '3em 0em', textTransform: 'uppercase' }}
         >
-          <a href="#root">Case Studies</a>
+          <a href="#root">This is what modern trading looks like</a>
         </Divider>
         <Header as="h3" style={{ fontSize: '2em' }}>
-          Did We Tell You About Our Bananas?
+          All assets supported
         </Header>
-        <p style={{ fontSize: '1.33em' }}>
-          Yes I know you probably disregarded the earlier boasts as non-sequitur
-          filler content, but it is really true. It took years of gene splicing
-          and combinatory DNA research, but our bananas can really dance.
-        </p>
-        <Button as="a" size="large">
-          I am Still Quite Interested
-        </Button>
+        <Image src={'https://img.freepik.com/free-vector/cryptocurrency-landing-page_52683-12388.jpg?size=626&ext=jpg&ga=GA1.2.778645586.1615912189'} />
+        <Button as={Link} to='/register' size="large" color='teal'>
+          Get Trading        </Button>
       </Container>
     </Segment>
   </>
