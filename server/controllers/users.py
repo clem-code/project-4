@@ -16,7 +16,7 @@ def signup():
         user = user_schema.load(request.json)
 
     except ValidationError as e:
-        return {"errors": e.messages, "messages": "Something went wrong."}
+        return {"errors": e.messages, "messages": "Something went wrong."}, 401
 
     user.save()
 
