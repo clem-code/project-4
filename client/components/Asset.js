@@ -141,7 +141,7 @@ export default function Asset({ location }) {
   if (!cryptoMetrics) {
     return null
   }
-  const hidden = { overflow: 'auto', maxHeight: '500px', display: 'none' }
+  const hidden = { display: 'none' }
   const revealed = { overflow: 'auto', maxHeight: 300, display: 'inline-block' }
 
   return <div>

@@ -42,14 +42,12 @@ export default function Trading() {
       updateUserData(data)
       updateTradeData1(data.trades)
       updateFavouritesData(data.favourites)
-      console.log(data.favourites, 'this is fetch data 1')
     }
     fetchData()
 
   }, [])
 
   useEffect(() => {
-    console.log('LOOK HERE LOOK HERE', tradeData1, userData)
     const groupedTrades = tradeData1.reduce((acc, trade) => {
       const existingObject = acc.find(obj => obj.name === trade.name_of_asset)
       if (existingObject) {
@@ -276,9 +274,9 @@ export default function Trading() {
 
       <Grid>
         <Grid.Row columns={2} divided>
-          <Grid.Column>
+          <Grid.Column style={{ overflow: 'auto', maxHeight: '330px' }}>
             <Header as='h3' textAlign='left'>Your Favourites</Header>
-            <Table celled inverted selectable>
+            <Table celled inverted selectable >
               <Table.Header>
                 <Table.Row>
                   <Table.HeaderCell>Name</Table.HeaderCell>
@@ -297,7 +295,7 @@ export default function Trading() {
               </Table.Body>
             </Table>
           </Grid.Column>
-          <Grid.Column>
+          <Grid.Column style={{ overflow: 'auto', maxHeight: '330px' }}>
             <Header as='h3' textAlign='left'>Your Portfolio</Header>
             <Table celled inverted selectable>
               <Table.Header>

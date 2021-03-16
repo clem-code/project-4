@@ -98,7 +98,6 @@ export default function Research() {
       location.reload()
     }
   }
-  // @router.route("/stocks/<int:stock_id>/favourites/<int:user_id>", methods=["POST"])
 
   useEffect(() => {
     async function cryptoImg(asset) {
