@@ -28,7 +28,7 @@ for stock in stocks:
     example = Stock(
         name=f"{stock['description']}",
         symbol=f"{stock['displaySymbol']}",
-        user=[list_users[1]],
+        user=[list_users[0]],
         type_of="stock",
     )
     list_stocks.append(example)
