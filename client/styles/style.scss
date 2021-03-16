@@ -7,6 +7,7 @@
   margin-right: 100px;
   text-align: center;
   color: black;
+  min-height: 400px;
 }
 
 .balance {
@@ -43,9 +44,10 @@
 }
 
 
-.trade-history {
+.table-holder {
   display: flex;
   justify-content: center;
-  height: 308px;
+  height: 200px;
   overflow-y: auto;
+  margin-bottom: 15px;
 }
