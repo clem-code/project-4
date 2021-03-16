@@ -155,10 +155,17 @@ export default function Trading() {
     }
 
   }
+  async function companyLogo(){
+    const { data } = await axios.get(`https://finnhub.io/api/v1/stock/profile2?symbol=${asset}&token=c13rrgf48v6r3f6kt4d0`)  
+    const src = data.weburl.slice(8, data.weburl.length - 1).replace('www.', '')
+    updateImage(src)
+  }
   useEffect(() => {
     async function fetchQuote(asset) {
       const { data } = await axios.get(`https://finnhub.io/api/v1/quote?symbol=${asset}&token=c13rrgf48v6r3f6kt4d0`)
       updateQuote(data.c)
+      companyLogo()
+
     }
     async function fetchQuoteCrypto(cryptoName) {
       const { data } = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${cryptoName}&vs_currencies=usd&include_24hr_change=true`)
