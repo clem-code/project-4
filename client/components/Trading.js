@@ -21,7 +21,90 @@ export default function Trading() {
   const [showTrade, updateShowTrade] = useState(false)
   const [open, setOpen] = useState(false)
   const [tradeData, updateTradeData] = useState({})
+  const [userData, updateUserData] = useState({})
+  const [tradeData1, updateTradeData1] = useState([])
+  const [yourStocks, updateYourStocks] = useState(null)
+  const [inPortfolio, updateInPortfolio] = useState(false)
+  const [sellAsset, updateSellAsset] = useState(false)
+  const [showSell, updateShowSell] = useState(false)
+  const [maxSell, updateMaxSell] = useState(0)
   const token = localStorage.getItem('token')
+
+
+  //SELLING
+  useEffect(() => {
+    async function fetchData() {
+      const { data } = await axios.get('/api/profile', {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+      updateUserData(data)
+      updateTradeData1(data.trades)
+      console.log(data, 'this is fetch data 1')
+    }
+    fetchData()
+
+  }, [])
+
+  useEffect(() => {
+    console.log('LOOK HERE LOOK HERE', tradeData1, userData)
+    const groupedTrades = tradeData1.reduce((acc, trade) => {
+      const existingObject = acc.find(obj => obj.name === trade.name_of_asset)
+      if (existingObject) {
+        existingObject.stocksHeld = existingObject.stocksHeld + trade.qty_purchased
+        return acc
+      } else {
+        return [...acc, {
+          name: trade.name_of_asset,
+          stocksHeld: trade.qty_purchased
+        }]
+      }
+    }, [])
+    console.log('this is grouped trades', groupedTrades)
+    updateYourStocks(groupedTrades)
+  }, [tradeData1])
+
+  function isInPortfolio(asset) {
+    console.log('isInPortfolio fired')
+    const filtered = yourStocks.filter((stock)=>{
+      if (stock.name === asset){
+        return stock
+      }
+    })
+    if(filtered.length > 0){
+    console.log(filtered, 'is in your portfolio')
+    updateInPortfolio(true)
+    console.log(' this is max sell',Number(filtered[0].stocksHeld))
+    updateMaxSell(Number(filtered[0].stocksHeld))
+  }else{
+      console.log('this is not in your portfolio')
+    }
+    // {name: "LINK", stocksHeld: 500}
+  }
+
+  useEffect(() => {
+    async function fetchPrices() {
+      const symbolSearch = sellAsset.toUpperCase()
+      console.log(symbolSearch)
+      const { data } = await axios.get(`/api/stocks/${symbolSearch}`)
+      const attempt = data
+      console.log(attempt)
+      if (!attempt) {
+        const { data } = await axios.get(`/api/crypto/${symbolSearch}`)
+        const attempt2 = data
+        console.log(attempt2)
+
+      }
+    }
+    fetchPrices()
+  }, [sellAsset])
+
+  function primeSell(){
+    console.log('primesell fired')
+    toggleBox()
+    updateShowSell(true)
+  }
+
+  //BUYING
 
   useEffect(() => {
     async function fetchUser() {
@@ -43,9 +126,10 @@ export default function Trading() {
   }, [asset])
   function toggleBox() {
     showTrade ? updateShowTrade(false) : updateShowTrade(true)
-
   }
-
+  function toggleTrade() {
+    showSell ? updateShowSell(false) : updateShowSell(true)
+  }
   async function searchFunc() {
     event.preventDefault()
     console.log(search)
@@ -55,6 +139,7 @@ export default function Trading() {
     if (assetClass === 'stocks') {
       const { data } = await axios.get(`/api/stocks/${symbolSearch}`)
       console.log(data)
+      isInPortfolio(data.symbol)
       updateId(data.id)
       updateAsset(data.symbol)
       updateStockName(data.name)
@@ -65,6 +150,7 @@ export default function Trading() {
       updateCryptoName(data.name)
       updateId(data.id)
       updateAsset(data.symbol)
+      isInPortfolio(data.symbol)
       updateSearch('')
     }
 
@@ -72,7 +158,6 @@ export default function Trading() {
   useEffect(() => {
     async function fetchQuote(asset) {
       const { data } = await axios.get(`https://finnhub.io/api/v1/quote?symbol=${asset}&token=c13rrgf48v6r3f6kt4d0`)
-      console.log(data.c)
       updateQuote(data.c)
     }
     async function fetchQuoteCrypto(cryptoName) {
@@ -109,8 +194,14 @@ export default function Trading() {
   const hidden = { display: 'none' }
   const revealed = { display: 'inline-block' }
   async function walletAdjust() {
-    console.log('this is wallet adjust')
-    const qtyAfterTrade = userWallet - tradeValue
+    let qtyAfterTrade
+    if (showSell){
+      console.log('this is wallet adjust for a sell order')
+       qtyAfterTrade = userWallet + tradeValue
+    } else {
+       qtyAfterTrade = userWallet - tradeValue
+      console.log('this is wallet adjust for a buy order')
+    }
     console.log(qtyAfterTrade)
     const walletData = {
       wallet: qtyAfterTrade
@@ -126,15 +217,25 @@ export default function Trading() {
     }
   }
   async function placeTrade() {
-    console.log('this is placed')
-    const trade = {
-      asset_price: Number(quote),
-      qty_purchased: Number(tradeQTY),
-      total_trade_value: Number(tradeValue),
-      transaction_type: 'buy',
-      name_of_asset: asset
+    let trade
+    if (showSell){
+      trade = {
+        asset_price: Number(quote),
+        qty_purchased: Number(tradeQTY * -1),
+        total_trade_value: Number(tradeValue),
+        transaction_type: 'sell',
+        name_of_asset: asset }
+    } else {
+      trade = {
+        asset_price: Number(quote),
+        qty_purchased: Number(tradeQTY),
+        total_trade_value: Number(tradeValue),
+        transaction_type: 'buy',
+        name_of_asset: asset
+      }
     }
-    console.log(trade)
+    console.log('this trade is placed', trade)
+    
     try {
       const { data } = await axios.post('/api/trades', trade, {
         headers: { Authorization: `Bearer ${token}` }
@@ -145,9 +246,15 @@ export default function Trading() {
     }
 
   }
+  if (!yourStocks) {
+    return null
+  }
 
   return <div>
     Trading Page
+   
+    <h2>Available Balance: ${Number(userData.wallet).toFixed(2)}</h2>
+    
     <Container>
       <div><Select placeholder='Select your asset' options={assetOptions} onChange={(event) => updateAssetClass(event.target.innerText.toLowerCase())} /></div>
 
@@ -164,13 +271,14 @@ export default function Trading() {
       </Grid.Column>}
       {assetClass === 'crypto' && <Grid.Column width={5}>
         <h2>Coin Information</h2>
-        <Image src={cryptoImg}  size='small' wrapped />
+        <Image src={cryptoImg} size='small' wrapped />
         <h3>Name: {cryptoName}</h3>
         <h4>Symbol: {asset}</h4>
         <h4>Price (USD): {quote}</h4>
       </Grid.Column>}
 
-      <Button secondary onClick={toggleBox}>Trade</Button>
+      <Button secondary onClick={toggleBox}>Buy</Button>
+      {inPortfolio && <Button primary onClick={primeSell}>Sell</Button>}
     </Container>
     <Container style={showTrade ? revealed : hidden}>
       <Message
@@ -194,10 +302,17 @@ export default function Trading() {
             type='text'
             value={quote}
           />
+          {inPortfolio && <Form.Input
+            fluid
+            label='Current Holdings'
+            placeholder='Current Holdings'
+            type='text'
+            value={maxSell}
+          />}
           <Form.Input
             fluid
             label='Quantity'
-            placeholder={assetClass === 'stocks' ? 'How many shares do you want to buy' : 'How many coins do you want to buy'}
+            placeholder={assetClass === 'stocks' ? 'How many shares do you want to trade' : 'How many coins do you want to trade'}
             type='text'
             onChange={(event) => { updateTradeQTY(event.target.value) }}
           />
@@ -256,6 +371,7 @@ export default function Trading() {
         </Modal.Actions>
       </Modal>
     </Container>
+
   </div>
 
 }
