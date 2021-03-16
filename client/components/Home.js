@@ -27,9 +27,10 @@ export default function Home() {
       <Container text>
         <Header
           as="h1"
-          content="Imagine-a-Company"
+          content="FOLIO"
           inverted
           style={{
+            color: 'teal',
             fontSize: '4em',
             fontWeight: 'normal',
             marginBottom: 0,
@@ -38,7 +39,7 @@ export default function Home() {
         />
         <Header
           as="h2"
-          content="Do whatever you want when you want to."
+          content="Join the Trading Revolution"
           inverted
           style={{
             fontSize: '1.7em',
@@ -46,8 +47,8 @@ export default function Home() {
             marginTop: '1.5em'
           }}
         />
-        <Button as={Link} to='/research' primary size="huge">
-          Get Started
+        <Button as={Link} to='/register' primary size="huge">
+          Dive In
           <Icon name="right arrow" />
         </Button>
       </Container>
@@ -57,19 +58,16 @@ export default function Home() {
         <Grid.Row>
           <Grid.Column width={8}>
             <Header as="h3" style={{ fontSize: '2em' }}>
-              We Help Companies and Companions
+              Folio
             </Header>
             <p style={{ fontSize: '1.33em' }}>
-              We can give your company superpowers to do things that they never
-              thought possible. Let us delight your customers and empower your
-              needs... through pure data analytics.
+              The trading platform for the 21st Century investor.
             </p>
             <Header as="h3" style={{ fontSize: '2em' }}>
-              We Make Bananas That Can Dance
+              Massive Choice
             </Header>
             <p style={{ fontSize: '1.33em' }}>
-              Yes that is right, you thought it was the stuff of dreams, but even
-              bananas can be bioengineered.
+              Choose from tens of thousands of stocks and coins.
             </p>
           </Grid.Column>
           <Grid.Column floated="right" width={6}>
@@ -84,7 +82,7 @@ export default function Home() {
         </Grid.Row>
         <Grid.Row>
           <Grid.Column textAlign="center">
-            <Button size="huge">Check Them Out</Button>
+            <Link to={'/research'}><Button size="huge" color='teal'>Browse Them All</Button></Link>
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -94,10 +92,10 @@ export default function Home() {
         <Grid.Row textAlign="center">
           <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
             <Header as="h3" style={{ fontSize: '2em' }}>
-              What a Company
+              Buy and sell at the click of a button
             </Header>
             <p style={{ fontSize: '1.33em' }}>
-              That is what they all say about us
+              Folio provides a seamless trading experience...
             </p>
           </Grid.Column>
           <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
@@ -146,6 +144,6 @@ export default function Home() {
           I am Still Quite Interested
         </Button>
       </Container>
-    </Segment>    
+    </Segment>
   </>
 }

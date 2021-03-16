@@ -147,13 +147,13 @@ export default function Asset({ location }) {
   return <div>
 
     <div textAlign='center' verticalAlign='middle' style={{ padding: '2em 1em' }}>
-      <Image  src={assetType !== 'crypto' ? `//logo.clearbit.com/${image}` : image} size={assetType !== 'crypto' ? 'large' : 'tiny'} wrapped />
+      <Image src={assetType !== 'crypto' ? `//logo.clearbit.com/${image}` : image} size={assetType !== 'crypto' ? 'large' : 'tiny'} wrapped />
       <span><h1 textAlign='center' verticalAlign='middle'>{assetName}</h1>
-      <h4 style={{ padding: '0.2em 0.05em' }}>Share Price (USD): {Number(quote).toFixed(2)}</h4>
-      <h4 style={{ padding: '0.2em 0.05em' }}>Market Capitalization (USD) {assetType === 'crypto' ? location.state.mktCap : Number(mktCap).toFixed(2)}</h4>
+        <h4 style={{ padding: '0.2em 0.05em' }}>Share Price (USD): {Number(quote).toFixed(2)}</h4>
+        <h4 style={{ padding: '0.2em 0.05em' }}>Market Capitalization (USD) {assetType === 'crypto' ? location.state.mktCap : Number(mktCap).toFixed(2)}</h4>
       </span>
     </div>
-    
+
     <Grid style={{ padding: '2em 1em' }} >
       <Grid.Row columns={2} style={{ padding: '2em 1em' }} >
         <Grid.Column color='teal'>
@@ -232,22 +232,15 @@ export default function Asset({ location }) {
       </Grid.Row>
     </Grid>
     <div>
+      <Link to={'/trading'}>
+        <Button color='purple' style={{ margin: '0.5em 0.5em', textAlign: 'right' }} content='Trade' />
+      </Link>
       <Link to={'/research'}>
-        <Button animated color='red'>
-          <Button.Content visible>Return</Button.Content>
-          <Button.Content hidden>
-            Go Back To Previous Page
-        </Button.Content>
-        </Button>
+        <Button color='teal' content='Previous Page' />
       </Link>
     </div>
     {assetType !== 'crypto' && <div>
-      <Button animated color='purple' onClick={revealFinancials}>
-        <Button.Content visible>See Financials</Button.Content>
-        <Button.Content hidden>
-          Click Here
-        </Button.Content>
-      </Button>
+      <Button  color='yellow' onClick={revealFinancials} content="See Financials" />
     </div>}
     {assetType === 'crypto' && <div>
       <Button animated color='purple' onClick={revealMore}>
