@@ -48,7 +48,7 @@ export default function Login({ history }) {
 
   return <>
     <div className="login">
-      <Grid textAlign="center" verticalAlign="middle" style={{ minHeight: 750, paddingTop: 80, paddingBottom: 80 }}>
+      <Grid textAlign="center" verticalAlign="middle" style={{ minHeight: 530, paddingTop: 80, paddingBottom: 80 }}>
         <Grid.Column style={{ maxWidth: 500 }}>
           <Header as="h2" color="teal" textAlign="center">
             Log in to your account

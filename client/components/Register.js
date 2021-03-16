@@ -35,7 +35,7 @@ export default function Register({ history }) {
 
   return <>
     <div className="register">
-      <Grid textAlign="center" verticalAlign="middle" style={{ minHeight: 750, paddingTop: 80, paddingBottom: 80 }}>
+      <Grid textAlign="center" verticalAlign="middle" style={{ minHeight: 530, paddingTop: 80, paddingBottom: 80 }}>
         <Grid.Column style={{ maxWidth: 500 }}>
           <Header as="h2" color="teal" textAlign="center">
             Create an account

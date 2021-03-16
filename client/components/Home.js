@@ -77,9 +77,10 @@ export default function Home() {
             <Image
               bordered
               rounded
-              size="large"
+              size="huge"
               src="https://specials-images.forbesimg.com/imageserve/5f2b139cc5d1415541643908/960x0.jpg?fit=scale"
-              alt="image"
+              alt="stock market graphic"
+              
             />
           </Grid.Column>
         </Grid.Row>
@@ -95,7 +96,7 @@ export default function Home() {
         <Grid.Row textAlign="center">
           <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
             <p style={{ fontSize: '1.33em' }}>
-              <Image src="https://image.freepik.com/free-vector/digital-bitcoin-technology-concept-background-design_1017-30485.jpg" alt="bitcoin graphic" />
+              <Image  src="https://image.freepik.com/free-vector/digital-bitcoin-technology-concept-background-design_1017-30485.jpg" alt="bitcoin graphic" />
             </p>
           </Grid.Column>
           <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
@@ -131,7 +132,8 @@ export default function Home() {
         <Header as="h3" style={{ fontSize: '2em' }}>
           All assets supported
         </Header>
-        <Image src={'https://img.freepik.com/free-vector/cryptocurrency-landing-page_52683-12388.jpg?size=626&ext=jpg&ga=GA1.2.778645586.1615912189'} />
+        <Image src={'https://img.freepik.com/free-vector/cryptocurrency-landing-page_52683-12388.jpg?size=626&ext=jpg&ga=GA1.2.778645586.1615912189'} alt="fin tech trading platform graphic" />
+        <Divider />
         <Button as={Link} to='/register' size="large" color='teal'>
           Get Trading        </Button>
       </Container>
