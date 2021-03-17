@@ -97,7 +97,7 @@ export default function Trading() {
 
   useEffect(() => {
     async function cryptoImg(asset) {
-      const { data } = await axios.get(`https://cors-anywhere.herokuapp.com/https://api.nomics.com/v1/currencies/ticker?key=88601c6a81a361f8e8413ab689dd66c2&ids=${asset}`)
+      const { data } = await axios.get(`https://api.nomics.com/v1/currencies/ticker?key=88601c6a81a361f8e8413ab689dd66c2&ids=${asset}`)
       updateCryptoImg(data[0].logo_url)
     }
     cryptoImg(asset)
