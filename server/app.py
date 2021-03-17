@@ -4,8 +4,7 @@ from config.environment import db_URI
 from flask_marshmallow import Marshmallow
 from flask_bcrypt import Bcrypt
 
-
-app = Flask(__name__)
+app = Flask(__name__, static_folder="dist")
 
 from decorators import logging, errors
 
@@ -23,7 +22,22 @@ app.register_blueprint(trades.router, url_prefix="/api")
 app.register_blueprint(users.router, url_prefix="/api")
 app.register_blueprint(stocks.router, url_prefix="/api")
 
-# ! Hello world flask app to start you off. Replace this with blueprints and routers and so on.
+
 @app.route("/api")
 def index():
     return {"message": "Hello, World!"}
+
+
+import os
+
+
+@app.route("/", defaults={"path": ""})
+@app.route("/<path:path>")
+def catch_all(path):
+    dirname = os.path.dirname(__file__)
+    filename = os.path.join(dirname, "dist/" + path)
+
+    if os.path.isfile(filename):
+        return app.send_static_file(path)
+
+    return app.send_static_file("index.html")

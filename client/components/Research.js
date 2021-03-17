@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { Button, Icon, Search, Grid, Image, Card, Table, Select, Divider } from 'semantic-ui-react'
+import { shuffle } from 'lodash'
 
 
 
@@ -64,8 +65,8 @@ export default function Research() {
       })
       const userId = data.id
       updateUserId(userId)
-      const favourites = data.favourites
-      updateFavourites(data.favourites)
+      // const favourites = data.favourites
+      // updateFavourites(data.favourites)
       let x
       for (x in data.favourites) {
         if (asset === data.favourites[x].symbol) {
@@ -128,12 +129,14 @@ export default function Research() {
       const filtered = data.results.filter((e) => {
         return e.multimedia !== null
       })
+      console.log('do you see me')
       const shuffled = _.shuffle(filtered).slice(0, 6)
+      console.log(shuffled, 'this is shuffled')
       updateNews(shuffled)
     }
     fetchNews()
   }, [])
-  
+
   useEffect(() => {
     async function fetchData() {
       const { data } = await axios.get('https://api.twelvedata.com/price?symbol=DJI&type=Index&apikey=07649f4d4b8642598f7b91949817c4c4')
@@ -214,7 +217,7 @@ export default function Research() {
 
   return <div>
     <Grid textAlign="center" verticalAlign="middle" style={{ padding: '6em 3em 2em 3em' }}>
-      <h1 style ={{ fontFamily: 'Poppins' }}>Discover // Research // Invest</h1>
+      <h1 style={{ fontFamily: 'Poppins' }}>Discover // Research // Invest</h1>
       <Grid.Row columns={6}>
         {news.map((box, index) => {
           return <Grid.Column key={index}>
@@ -235,12 +238,12 @@ export default function Research() {
         })}
       </Grid.Row>
     </Grid>
-    <Divider/> 
+    <Divider />
 
     <Grid textAlign="center" verticalAlign="middle" style={{ color: 'white', backgroundColor: 'black', padding: '3em 0em' }}>
       <Grid.Row>
         <Grid.Column width={6}>
-          <h1 style={{  fontFamily: 'Poppins'  }}>Major Stock Indices</h1>
+          <h1 style={{ fontFamily: 'Poppins' }}>Major Stock Indices</h1>
           <Table celled>
             <Table.Header>
               <Table.Row>
@@ -266,7 +269,7 @@ export default function Research() {
           </Table>
         </Grid.Column>
         <Grid.Column width={6}>
-          <h1 style={{  fontFamily: 'Poppins'  }}>Key Crypto Prices</h1>
+          <h1 style={{ fontFamily: 'Poppins' }}>Key Crypto Prices</h1>
           <Table celled>
             <Table.Header>
               <Table.Row>
@@ -294,7 +297,7 @@ export default function Research() {
       </Grid.Row>
     </Grid>
     <Divider />
-    
+
     <Grid textAlign="center" verticalAlign="middle" style={{ padding: '2em 0em 5em 0em' }}>
       <Grid.Row>
         <Search
@@ -319,7 +322,7 @@ export default function Research() {
                 pathname: `/asset/${id}`,
                 state: { assetState: asset, nameState: company.name, quoteState: quote, assetType: 'stocks', img: image }
               }}>
-                <Image src={`//logo.clearbit.com/${image}`} size='large' wrapped textalign="center" verticalAlign="middle"/>
+                <Image src={`//logo.clearbit.com/${image}`} size='large' wrapped textalign="center" verticalAlign="middle" />
                 <h3>Name: {company.name}</h3>
                 <h4>Share Price (USD): {quote}</h4>
               </Link>
