@@ -68,7 +68,6 @@ export default function Portfolio() {
     helperFunction()
   }, [tradeData])
 
-
   useEffect(() => {
     const helperFunctionCrypto = async () => {
       const crypto = filterCrypto()
