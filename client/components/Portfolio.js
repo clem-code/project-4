@@ -51,6 +51,8 @@ export default function Portfolio() {
         const existingObject = acc.find(obj => obj.name === trade.name_of_asset)
         if (existingObject) {
           existingObject.stocksHeld = existingObject.stocksHeld + trade.qty_purchased
+          existingObject.pricePaid = existingObject.pricePaid + trade.total_trade_value
+          existingObject.currentValue = existingObject.stocksHeld * (stockPrices.find(price => price.name === trade.name_of_asset).price)
           return acc
         } else {
           return [...acc, {
@@ -77,6 +79,8 @@ export default function Portfolio() {
         const existingObject = acc.find(obj => obj.name === trade.name_of_asset)
         if (existingObject) {
           existingObject.stocksHeld = existingObject.stocksHeld + trade.qty_purchased
+          existingObject.pricePaid = existingObject.pricePaid + trade.total_trade_value
+          existingObject.currentValue = existingObject.stocksHeld * (cryptoPrices.find(price => price.name === trade.name_of_asset).price) 
           return acc
         } else {
           return [...acc, {
@@ -146,7 +150,7 @@ export default function Portfolio() {
                             <Table.Cell>{trade.name}</Table.Cell>
                             <Table.Cell>{trade.stocksHeld}</Table.Cell>
                             <Table.Cell>${trade.pricePaid}</Table.Cell>
-                            <Table.Cell>${trade.currentValue}</Table.Cell>
+                            <Table.Cell>${trade.currentValue.toFixed(2)}</Table.Cell>
                           </Table.Row>
                         })}
                       </Table.Body>
@@ -172,7 +176,7 @@ export default function Portfolio() {
                             <Table.Cell>{trade.name}</Table.Cell>
                             <Table.Cell>{trade.stocksHeld}</Table.Cell>
                             <Table.Cell>${trade.pricePaid}</Table.Cell>
-                            <Table.Cell>${trade.currentValue}</Table.Cell>
+                            <Table.Cell>${trade.currentValue.toFixed(2)}</Table.Cell>
                           </Table.Row>
                         })}
                       </Table.Body>
@@ -202,7 +206,7 @@ export default function Portfolio() {
                             <Table.Cell>{trade.name_of_asset}</Table.Cell>
                             <Table.Cell>{trade.transaction_type}</Table.Cell>
                             <Table.Cell textAlign='center'>{trade.qty_purchased}</Table.Cell>
-                            <Table.Cell>{trade.asset_price}</Table.Cell>
+                            <Table.Cell>£{trade.asset_price.toFixed(2)}</Table.Cell>
                           </Table.Row>
                         })}
                       </Table.Body>
@@ -212,7 +216,7 @@ export default function Portfolio() {
                 <Grid.Column>
                   <Header as='h2' textAlign='center' style={{ fontFamily: 'Poppins' }}>Your Favourites</Header>
                   <div className="table-holder">
-                    <Table celled inverted selectable>
+                    <Table celled inverted selectable style={{ margin: 10 }}>
                       <Table.Header>
                         <Table.Row>
                           <Table.HeaderCell>Name</Table.HeaderCell>
