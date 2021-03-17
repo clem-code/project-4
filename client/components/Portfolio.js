@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Grid, Image } from 'semantic-ui-react'
-import { Table, Header, Statistic, Container, Loader } from 'semantic-ui-react'
+import { Grid, Table, Header, Container, Loader } from 'semantic-ui-react'
 
 export default function Portfolio() {
 
@@ -29,17 +28,17 @@ export default function Portfolio() {
 
   function filterStocks() {
     return tradeData.filter(trade => {
-        if (trade.asset_type === 'stocks') {
-          return trade
-        }
+      if (trade.asset_type === 'stocks') {
+        return trade
+      }
     })
   }
 
   function filterCrypto() {
     return tradeData.filter(trade => {
-        if (trade.asset_type === 'crypto') {
-          return trade
-        }
+      if (trade.asset_type === 'crypto') {
+        return trade
+      }
     })
   }
 
@@ -53,24 +52,23 @@ export default function Portfolio() {
       console.log('stockPrices', stockPrices)
       const groupedTrades =  filterStocks().reduce((acc, trade) => {
 
-      const existingObject = acc.find(obj => obj.name === trade.name_of_asset)
-      if (existingObject) {
-        existingObject.stocksHeld = existingObject.stocksHeld + trade.qty_purchased
-        return acc
-      } else {
-        return [...acc, {
-          name: trade.name_of_asset,
-          stocksHeld: trade.qty_purchased,
-          pricePaid: trade.total_trade_value,
-          currentValue: (stockPrices.find(price => price.name === trade.name_of_asset).price) * trade.qty_purchased
-        }]
-      }
-    }, [])
-  updateYourStocks(groupedTrades) 
-}
+        const existingObject = acc.find(obj => obj.name === trade.name_of_asset)
+        if (existingObject) {
+          existingObject.stocksHeld = existingObject.stocksHeld + trade.qty_purchased
+          return acc
+        } else {
+          return [...acc, {
+            name: trade.name_of_asset,
+            stocksHeld: trade.qty_purchased,
+            pricePaid: trade.total_trade_value,
+            currentValue: (stockPrices.find(price => price.name === trade.name_of_asset).price) * trade.qty_purchased
+          }]
+        }
+      }, [])
+      updateYourStocks(groupedTrades) 
+    }
     helperFunction()
   }, [tradeData])
-
 
   useEffect(() => {
     const helperFunctionCrypto = async () => {
@@ -78,32 +76,31 @@ export default function Portfolio() {
       const cryptoNames = [...new Set(crypto.map((crypto) => crypto.name_of_asset))]
 
       const cryptoPrices = await Promise.all(cryptoNames.map(async (cryptoName) => ({ name: cryptoName, price: await getCryptoPrice(cryptoName)})))
-    const groupedTrades = filterCrypto().reduce((acc, trade) => {
-      const existingObject = acc.find(obj => obj.name === trade.name_of_asset)
-      if (existingObject) {
-        existingObject.stocksHeld = existingObject.stocksHeld + trade.qty_purchased
-        return acc
-      } else {
-        return [...acc, {
-          name: trade.name_of_asset,
-          stocksHeld: trade.qty_purchased,
-          pricePaid: trade.total_trade_value,
-          currentValue: (cryptoPrices.find(price => price.name === trade.name_of_asset).price) * trade.qty_purchased
-        }]
-      }
-    }, [])
-    updateYourCrypto(groupedTrades) 
-  }
+      const groupedTrades = filterCrypto().reduce((acc, trade) => {
+        const existingObject = acc.find(obj => obj.name === trade.name_of_asset)
+        if (existingObject) {
+          existingObject.stocksHeld = existingObject.stocksHeld + trade.qty_purchased
+          return acc
+        } else {
+          return [...acc, {
+            name: trade.name_of_asset,
+            stocksHeld: trade.qty_purchased,
+            pricePaid: trade.total_trade_value,
+            currentValue: (cryptoPrices.find(price => price.name === trade.name_of_asset).price) * trade.qty_purchased
+          }]
+        }
+      }, [])
+      updateYourCrypto(groupedTrades) 
+    }
     helperFunctionCrypto()
   }, [tradeData])
-
 
 
   async function getPrice(asset){
     const ticker = asset.toUpperCase()
     const { data } = await axios.get(`https://finnhub.io/api/v1/quote?symbol=${ticker}&token=c189lnf48v6ojusa06gg`)
-        console.log(data.c)
-        return data.c.toFixed(2)
+    console.log(data.c)
+    return data.c.toFixed(2)
         
   }
 
@@ -117,7 +114,7 @@ export default function Portfolio() {
   return (
 <>
 <div className="portfolio-page">
-    {!userData ? <Loader active /> : 
+  {!userData ? <Loader active /> : 
   <>
     <h1 style={{ marginTop: 40, marginBottom: 50 }}>{userData.username}'s Portfolio</h1>
     <Grid divided='vertically'>
@@ -138,18 +135,18 @@ export default function Portfolio() {
         <Grid.Column>
           <Header as='h1' textAlign='left'>Your Stocks</Header>
           <div className="table-holder">
-          <Table celled inverted selectable style={{ margin: 10 }}>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Name</Table.HeaderCell>
-                <Table.HeaderCell># Held</Table.HeaderCell>
-                <Table.HeaderCell>Price paid</Table.HeaderCell>
-                <Table.HeaderCell>Current Value</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
+            <Table celled inverted selectable style={{ margin: 10 }}>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell>Name</Table.HeaderCell>
+                  <Table.HeaderCell># Held</Table.HeaderCell>
+                  <Table.HeaderCell>Price paid</Table.HeaderCell>
+                  <Table.HeaderCell>Current Value</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
 
-            <Table.Body>
-            {yourStocks && yourStocks.map((trade, index) => {
+              <Table.Body>
+                {yourStocks && yourStocks.map((trade, index) => {
                   return <Table.Row key={index}>
                     <Table.Cell>{trade.name}</Table.Cell>
                     <Table.Cell>{trade.stocksHeld}</Table.Cell>
@@ -157,25 +154,25 @@ export default function Portfolio() {
                     <Table.Cell>${trade.currentValue}</Table.Cell>
                   </Table.Row>
                 })}
-            </Table.Body>
-          </Table>
+              </Table.Body>
+            </Table>
           </div>
         </Grid.Column>
         <Grid.Column>
           <Header as='h1' textAlign='left'>Your Crypto</Header>
           <div className="table-holder">
-          <Table celled inverted selectable style={{ margin: 10 }}>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Name</Table.HeaderCell>
-                <Table.HeaderCell># Held</Table.HeaderCell>
-                <Table.HeaderCell>Price paid</Table.HeaderCell>
-                <Table.HeaderCell>Current Value</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
+            <Table celled inverted selectable style={{ margin: 10 }}>
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell>Name</Table.HeaderCell>
+                  <Table.HeaderCell># Held</Table.HeaderCell>
+                  <Table.HeaderCell>Price paid</Table.HeaderCell>
+                  <Table.HeaderCell>Current Value</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header>
 
-            <Table.Body>
-            {yourCrypto && yourCrypto.map((trade, index) => {
+              <Table.Body>
+                {yourCrypto && yourCrypto.map((trade, index) => {
                   return <Table.Row key={index}>
                     <Table.Cell>{trade.name}</Table.Cell>
                     <Table.Cell>{trade.stocksHeld}</Table.Cell>
@@ -183,8 +180,8 @@ export default function Portfolio() {
                     <Table.Cell>${trade.currentValue}</Table.Cell>
                   </Table.Row>
                 })}
-            </Table.Body>
-          </Table>
+              </Table.Body>
+            </Table>
           </div>
         </Grid.Column>
       </Grid.Row>
@@ -204,45 +201,45 @@ export default function Portfolio() {
                   <Table.HeaderCell>Price</Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
-                <Table.Body>
-                {tradeData.map((trade, index) => {
-                  return<Table.Row key={index}>
-                          <Table.Cell>{trade.name_of_asset}</Table.Cell>
-                          <Table.Cell>{trade.transaction_type}</Table.Cell>
-                          <Table.Cell textAlign='center'>{trade.qty_purchased}</Table.Cell>
-                          <Table.Cell>{trade.asset_price}</Table.Cell>
-                        </Table.Row>
-                  })}
-               </Table.Body>
-            </Table>
-          </div>
-        </Grid.Column>
-        <Grid.Column>
-        <Header as='h2' textAlign='center'>Your Favourites</Header>
-        <Table celled inverted selectable>
-              <Table.Header>
-                <Table.Row>
-                  <Table.HeaderCell>Name</Table.HeaderCell>
-                  <Table.HeaderCell>Symbol</Table.HeaderCell>
-                  <Table.HeaderCell>Asset Class</Table.HeaderCell>
-                </Table.Row>
-              </Table.Header>
               <Table.Body>
-                {favouritesData.map((trade, index) => {
+                {tradeData.map((trade, index) => {
                   return <Table.Row key={index}>
-                    <Table.Cell>{trade.name}</Table.Cell>
-                    <Table.Cell>{trade.symbol}</Table.Cell>
-                    <Table.Cell>{trade.type_of}</Table.Cell>
+                    <Table.Cell>{trade.name_of_asset}</Table.Cell>
+                    <Table.Cell>{trade.transaction_type}</Table.Cell>
+                    <Table.Cell textAlign='center'>{trade.qty_purchased}</Table.Cell>
+                    <Table.Cell>{trade.asset_price}</Table.Cell>
                   </Table.Row>
                 })}
               </Table.Body>
             </Table>
+          </div>
+        </Grid.Column>
+        <Grid.Column>
+          <Header as='h2' textAlign='center'>Your Favourites</Header>
+          <Table celled inverted selectable>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>Name</Table.HeaderCell>
+                <Table.HeaderCell>Symbol</Table.HeaderCell>
+                <Table.HeaderCell>Asset Class</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              {favouritesData.map((trade, index) => {
+                return <Table.Row key={index}>
+                  <Table.Cell>{trade.name}</Table.Cell>
+                  <Table.Cell>{trade.symbol}</Table.Cell>
+                  <Table.Cell>{trade.type_of}</Table.Cell>
+                </Table.Row>
+              })}
+            </Table.Body>
+          </Table>
         </Grid.Column>
       </Grid.Row>
     </Grid>
     </>
   }
-  </div>
+</div>
 </>
-)  
+  )  
 }
