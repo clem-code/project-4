@@ -56,25 +56,25 @@ export default function About() {
           <Header style={{ fontFamily: 'Poppins' }} as='h2' textAlign='center'>How the Website Works:</Header>
           <Segment>
             <p>Sign up (it's completely free!) and login.</p>
-            <Image src='./images/about1.png' />
+            <Image src='https://i.imgur.com/KuaYsqk.png' />
           </Segment>
           <Segment>
             <p>Have a browse on the research page. Search by ticker symbol NOT company name. <br />For example: enter FB to search for Facebook...</p>
-            <Image src='./images/about2.png' />
+            <Image src='https://i.imgur.com/e6DV7me.png' />
           </Segment>
           <Segment>
             <p>...and BTC to get Bitcoin!</p>
-            <Image src='./images/about3.png' />
+            <Image src='https://i.imgur.com/bbWW4Mp.png' />
           </Segment>
           <Segment>
             <p>When you're ready go to the trade page and make a purchase!</p>
-            <Image src='./images/about4.png' />
+            <Image src='https://i.imgur.com/rq3CUKS.png' />
             <p>But don't worry, we'll double check before you do to make sure you don't make any accidental trades.</p>
-            <Image src='./images/about5.png' />
+            <Image src=' https://i.imgur.com/hEfzOc0.png' />
           </Segment>
           <Segment>
             <p>Take a look at your portfolio anytime to see how your investments are doing...</p>
-            <Image src='./images/about6.png' />
+            <Image src='https://i.imgur.com/S5PfBIS.png' />
           </Segment>
         </Grid.Column>
       </Grid.Row>

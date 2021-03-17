@@ -129,10 +129,6 @@ export default function Research() {
       const filtered = data.results.filter((e) => {
         return e.multimedia !== null
       })
-      console.log('do you see me')
-
-      // const shuffled = _.shuffle(filtered).slice(0, 6)
-      // console.log(shuffled, 'this is shuffled')
       updateNews(filtered.slice(0, 6))
     }
     fetchNews()

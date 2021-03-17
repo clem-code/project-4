@@ -15,13 +15,14 @@ export default function Footer() {
                 <List.Item as="a">Who We Are</List.Item>
                 <List.Item as="a">Impact</List.Item>
                 <List.Item as="a">Media Contacts</List.Item>
+                <List.Item><a href='https://nomics.com'>Crypto Market Cap & Pricing Data Provided By Nomics</a></List.Item>
               </List>
             </Grid.Column>
             <Grid.Column width={7}>
               <Header inverted as="h4" content="Legal" />
               <List link inverted>
                 <List.Item as="a">Privacy & Security</List.Item>
-                <List.Item as="a">Terma & Conditions</List.Item>
+                <List.Item as="a">Terms & Conditions</List.Item>
                 <List.Item as="a">Global Financial Crimes Complience</List.Item>
                 <List.Item as="a">Accessibility</List.Item>
               </List>
@@ -32,6 +33,7 @@ export default function Footer() {
                 <List.Item as="a">LinkedIn</List.Item>
                 <List.Item as="a">Twitter</List.Item>
                 <List.Item as="a">Facebook</List.Item>
+                <List.Item as="a">Instagram</List.Item>
               </List>
             </Grid.Column>
           </Grid.Row>

@@ -16,7 +16,7 @@ const SidebarComponent = ({ history }) => {
   }
   return <div>
     <Menu className="menu-container" inverted widths='8' size='large' stackable>
-      <Menu.Item as={Link} to='/'> 
+      <Menu.Item as={Link} to='/'>
         <Icon name='home' />
         Home
       </Menu.Item>
@@ -32,23 +32,22 @@ const SidebarComponent = ({ history }) => {
         <Icon name='chart line' />
         Trading
       </Menu.Item>
-      <Menu.Item as={Link} to='/login'>
+      {!token && <Menu.Item as={Link} to='/login'>
         <Icon name='sign in' />
         Login
-      </Menu.Item>
-      <Menu.Item as={Link} to='/register'>
+      </Menu.Item>}
+      {!token && <Menu.Item as={Link} to='/register'>
         <Icon name='plus circle' />
         Register
-      </Menu.Item>
+      </Menu.Item>}
       <Menu.Item as={Link} to='/about'>
         <Icon name='help' />
         About
       </Menu.Item>
-      <Menu.Item>
-        {token && <Button onClick={handleLogout}>
-          <strong>Logout</strong>
-        </Button>}
-      </Menu.Item>
+      {token && <Menu.Item onClick={handleLogout}>
+        <Icon name='log out' />
+       Logout
+      </Menu.Item>}
     </Menu>
   </div>
 }
