@@ -25,7 +25,7 @@ export default function Asset({ location }) {
 
   useEffect(() => {
     async function getMktCap() {
-      const { data } = await axios.get(`https://financialmodelingprep.com/api/v3/market-capitalization/${asset}?apikey=8e17a4dcd9894ebe5fc45645972dffa7`)
+      const { data } = await axios.get(`https://financialmodelingprep.com/api/v3/market-capitalization/${asset}?apikey=12e0314bcbd996367eadfa3d7ed933e9`)
       updateMktCap(data[0].marketCap)
     }
     getMktCap()
@@ -56,7 +56,7 @@ export default function Asset({ location }) {
 
   useEffect(() => {
     async function tableData() {
-      const { data } = await axios.get(`https://finnhub.io/api/v1/stock/metric?symbol=${asset}&metric=all&token=c13rrgf48v6r3f6kt4d0`)
+      const { data } = await axios.get(`https://finnhub.io/api/v1/stock/metric?symbol=${asset}&metric=all&token=c18hab748v6oak5h78g0`)
       updateFinancials(Object.entries(data.metric))
     }
     tableData()
@@ -64,7 +64,7 @@ export default function Asset({ location }) {
 
   useEffect(() => {
     async function ratioData() {
-      const { data } = await axios.get(`https://financialmodelingprep.com/api/v3/ratios-ttm/${asset}?apikey=8e17a4dcd9894ebe5fc45645972dffa7`)
+      const { data } = await axios.get(`https://financialmodelingprep.com/api/v3/ratios-ttm/${asset}?apikey=12e0314bcbd996367eadfa3d7ed933e9`)
       updateRatios(Object.entries(data[0]))
     }
     ratioData()
@@ -152,9 +152,9 @@ export default function Asset({ location }) {
   return <div>
     <div textAlign='center' verticalAlign='middle' style={{ padding: '2em 1em' }}>
       <Image src={assetType !== 'crypto' ? `//logo.clearbit.com/${image}` : image} size={assetType !== 'crypto' ? 'large' : 'tiny'} wrapped />
-      <span><h1 textAlign='center' verticalAlign='middle'>{assetName}</h1>
-        <h4 style={{ padding: '0.2em 0.05em' }}>Share Price (USD): {Number(quote).toFixed(2)}</h4>
-        <h4 style={{ padding: '0.2em 0.05em' }}>Market Capitalization (USD) {assetType === 'crypto' ? location.state.mktCap : Number(mktCap).toFixed(2)}</h4>
+      <span><h1 style={{  fontFamily: 'Poppins'  }} textAlign='center' verticalAlign='middle'>{assetName}</h1>
+        <h4 style={{ padding: '0.2em 0.05em', fontFamily: 'Poppins' }}>Share Price (USD): {Number(quote).toFixed(2)}</h4>
+        <h4 style={{ padding: '0.2em 0.05em', fontFamily: 'Poppins' }}>Market Capitalization (USD) {assetType === 'crypto' ? location.state.mktCap : Number(mktCap).toFixed(2)}</h4>
       </span>
     </div>
 

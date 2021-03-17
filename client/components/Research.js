@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { Button, Icon, Search, Grid, Image, Card, Table, Select, Divider } from 'semantic-ui-react'
-import { remove, shuffle } from 'lodash'
-import Ticker from 'react-ticker'
+
 
 
 export default function Research() {
@@ -14,10 +13,8 @@ export default function Research() {
   const [company, updateCompanies] = useState({})
   const [cryptoData, updateCryptoData] = useState({ market_data: '', marketcap: '' })
   const [cryptoImg, updateCryptoImg] = useState('https://cryptoicons.org/api/icon/eth/200')
-  const [price, updatePrice] = useState({})
   const [id, updateId] = useState(0)
   const [userId, updateUserId] = useState(0)
-  const [favourites, updateFavourites] = useState([])
   const [image, updateImage] = useState('okta.com')
   const [quote, updateQuote] = useState('')
   const [news, updateNews] = useState([])
@@ -48,7 +45,6 @@ export default function Research() {
     const symbolSearch = searchTerm.toUpperCase()
     if (assetClass === 'stocks') {
       const { data } = await axios.get(`/api/stocks/${symbolSearch}`)
-      console.log(data)
       updateId(data.id)
       updateAsset(data.symbol)
     } else {
@@ -70,11 +66,9 @@ export default function Research() {
       updateUserId(userId)
       const favourites = data.favourites
       updateFavourites(data.favourites)
-      console.log(userId, favourites)
       let x
       for (x in data.favourites) {
         if (asset === data.favourites[x].symbol) {
-          console.log('this is a favourite', favourites[x].symbol)
           updateIsFavourite(true)
         }
       }
@@ -83,15 +77,12 @@ export default function Research() {
   }, [asset])
   async function selectFavourite() {
     if (!isFavourite) {
-      console.log('going to post a favourite')
       const { data } = await axios.post(`/api/stocks/${id}/favourites/${userId}`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       })
-      console.log(id, userId, token)
       location.reload()
     }
     if (isFavourite) {
-      console.log('going to delete a favourite')
       const { data } = await axios.delete(`/api/stocks/${id}/favourites/${userId}`, {
         headers: { Authorization: `Bearer ${token}` }
       })
@@ -101,7 +92,7 @@ export default function Research() {
 
   useEffect(() => {
     async function cryptoImg(asset) {
-      const { data } = await axios.get(`https://api.nomics.com/v1/currencies/ticker?key=e999ef911093392494fc15a4c67d84b4&ids=${asset}`)
+      const { data } = await axios.get(`https://api.nomics.com/v1/currencies/ticker?key=88601c6a81a361f8e8413ab689dd66c2&ids=${asset}`)
       updateCryptoImg(data[0].logo_url)
     }
     cryptoImg(asset)
@@ -111,7 +102,6 @@ export default function Research() {
     async function fetchInfo(asset) {
       if (assetClass === 'stocks') {
         const { data } = await axios.get(`https://finnhub.io/api/v1/stock/profile2?symbol=${asset}&token=c13rrgf48v6r3f6kt4d0`)
-        console.log(data)
         updateCompanies(data)
         const src = data.weburl.slice(8, data.weburl.length - 1).replace('www.', '')
         updateImage(src)
@@ -146,32 +136,32 @@ export default function Research() {
   
   useEffect(() => {
     async function fetchData() {
-      const { data } = await axios.get('https://api.twelvedata.com/price?symbol=DJI&type=Index&apikey=1222b4bc258246d498d11e610aed0baa')
+      const { data } = await axios.get('https://api.twelvedata.com/price?symbol=DJI&type=Index&apikey=07649f4d4b8642598f7b91949817c4c4')
       const dow = Number(data.price).toFixed(2)
       updateDow(dow)
     }
     async function fetchData1() {
-      const { data } = await axios.get('https://api.twelvedata.com/price?symbol=IXIC&type=Index&apikey=1222b4bc258246d498d11e610aed0baa')
+      const { data } = await axios.get('https://api.twelvedata.com/price?symbol=IXIC&type=Index&apikey=07649f4d4b8642598f7b91949817c4c4')
       const nasdaq = Number(data.price).toFixed(2)
       updateNasdaq(nasdaq)
     }
     async function fetchData2() {
-      const { data } = await axios.get('https://api.twelvedata.com/price?symbol=GSPC&type=Index&apikey=1222b4bc258246d498d11e610aed0baa')
+      const { data } = await axios.get('https://api.twelvedata.com/price?symbol=GSPC&type=Index&apikey=07649f4d4b8642598f7b91949817c4c4')
       const sandp = Number(data.price).toFixed(2)
       updateSandp(sandp)
     }
     async function fetchData3() {
-      const { data } = await axios.get('https://api.twelvedata.com/quote?symbol=DJI&type=Index&apikey=1222b4bc258246d498d11e610aed0baa')
+      const { data } = await axios.get('https://api.twelvedata.com/quote?symbol=DJI&type=Index&apikey=07649f4d4b8642598f7b91949817c4c4')
       const dow = Number(data.previous_close).toFixed(2)
       updateDowC(dow)
     }
     async function fetchData4() {
-      const { data } = await axios.get('https://api.twelvedata.com/quote?symbol=IXIC&type=Index&apikey=1222b4bc258246d498d11e610aed0baa')
+      const { data } = await axios.get('https://api.twelvedata.com/quote?symbol=IXIC&type=Index&apikey=07649f4d4b8642598f7b91949817c4c4')
       const nasdaq = Number(data.previous_close).toFixed(2)
       updateNasdaqC(nasdaq)
     }
     async function fetchData5() {
-      const { data } = await axios.get('https://api.twelvedata.com/quote?symbol=GSPC&type=Index&apikey=1222b4bc258246d498d11e610aed0baa')
+      const { data } = await axios.get('https://api.twelvedata.com/quote?symbol=GSPC&type=Index&apikey=07649f4d4b8642598f7b91949817c4c4')
       const sandp = Number(data.previous_close).toFixed(2)
       updateSandpC(sandp)
     }
@@ -224,7 +214,7 @@ export default function Research() {
 
   return <div>
     <Grid textAlign="center" verticalAlign="middle" style={{ padding: '6em 3em 2em 3em' }}>
-      <h1><i>Discover // Research // Invest</i></h1>
+      <h1 style ={{ fontFamily: 'Poppins' }}>Discover // Research // Invest</h1>
       <Grid.Row columns={6}>
         {news.map((box, index) => {
           return <Grid.Column key={index}>
@@ -250,7 +240,7 @@ export default function Research() {
     <Grid textAlign="center" verticalAlign="middle" style={{ color: 'white', backgroundColor: 'black', padding: '3em 0em' }}>
       <Grid.Row>
         <Grid.Column width={6}>
-          <h1>Major Stock Indices</h1>
+          <h1 style={{  fontFamily: 'Poppins'  }}>Major Stock Indices</h1>
           <Table celled>
             <Table.Header>
               <Table.Row>
@@ -276,7 +266,7 @@ export default function Research() {
           </Table>
         </Grid.Column>
         <Grid.Column width={6}>
-          <h1>Key Crypto Prices</h1>
+          <h1 style={{  fontFamily: 'Poppins'  }}>Key Crypto Prices</h1>
           <Table celled>
             <Table.Header>
               <Table.Row>
@@ -308,9 +298,9 @@ export default function Research() {
     <Grid textAlign="center" verticalAlign="middle" style={{ padding: '2em 0em 5em 0em' }}>
       <Grid.Row>
         <Search
-          onSearchChange={(event) => updateSearch(event.target.value)} type="text" placeholder="Search Assets..." style={{ margin: '0em 1em' }}
+          onSearchChange={(event) => updateSearch(event.target.value)} type="text" placeholder="Search By Symbol..." style={{ margin: '0em 1em' }}
         />
-        <Select placeholder='Select your asset' options={assetOptions} onChange={(event) => updateAssetClass(event.target.innerText.toLowerCase())} />
+        <Select placeholder='Select Your Asset' options={assetOptions} onChange={(event) => updateAssetClass(event.target.innerText.toLowerCase())} />
         <Button
           color='blue'
           content='Search'

@@ -22,7 +22,6 @@ export default function Register({ history }) {
 
     try {
       const { data } = await axios.post('/api/signup', formData)
-      console.log(data)
       history.push('/login')
     } catch (err) {
       if (formData.username === '' || formData.email === '' || formData.password === '') {
@@ -37,7 +36,7 @@ export default function Register({ history }) {
     <div className="register">
       <Grid textAlign="center" verticalAlign="middle" style={{ minHeight: 530, paddingTop: 80, paddingBottom: 80 }}>
         <Grid.Column style={{ maxWidth: 500 }}>
-          <Header as="h2" color="teal" textAlign="center">
+          <Header as="h2" color="teal" textAlign="center" style ={{ fontFamily: 'Poppins' }}>
             Create an account
           </Header>
           <Form size="large" onSubmit={handleSubmit}>

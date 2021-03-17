@@ -37,7 +37,8 @@ export default function Home() {
             fontSize: '4em',
             fontWeight: 'normal',
             marginBottom: 0,
-            marginTop: '3em'
+            marginTop: '3em',
+            fontFamily: 'Poppins'
           }}
         />
         <Header
@@ -60,13 +61,13 @@ export default function Home() {
       <Grid container stackable verticalAlign="middle">
         <Grid.Row>
           <Grid.Column width={8}>
-            <Header as="h3" style={{ fontSize: '2em' }}>
+            <Header as="h3" style={{ fontSize: '2em', fontFamily: 'Poppins' }}>
               Folio
             </Header>
             <p style={{ fontSize: '1.33em' }}>
               The trading platform for the 21st Century investor.
             </p>
-            <Header as="h3" style={{ fontSize: '2em' }}>
+            <Header as="h3" style={{ fontSize: '2em', fontFamily: 'Poppins' }}>
               Massive Choice
             </Header>
             <p style={{ fontSize: '1.33em' }}>
@@ -100,7 +101,7 @@ export default function Home() {
             </p>
           </Grid.Column>
           <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
-            <Header as="h3" style={{ fontSize: '2em' }}>
+            <Header as="h3" style={{ fontSize: '2em', fontFamily: 'Poppins' }}>
               Buy and sell at the click of a button
             </Header>
             <p style={{ fontSize: '1.33em' }}>
@@ -113,7 +114,7 @@ export default function Home() {
     </Segment>
     <Segment style={{ padding: '8em 0em' }} vertical>
       <Container text>
-        <Header as="h3" style={{ fontSize: '2em' }}>
+        <Header as="h3" style={{ fontSize: '2em', fontFamily: 'Poppins' }}>
           Nothing beats the Folio Experience        </Header>
         <p style={{ fontSize: '1.33em' }}>
           No red tape, no delays. Just the best data and the lastest market data at your finger tips. All supported by state-of-the-art infrastructure.
@@ -129,7 +130,7 @@ export default function Home() {
         >
           <a href="#root">This is what modern trading looks like</a>
         </Divider>
-        <Header as="h3" style={{ fontSize: '2em' }}>
+        <Header as="h3" style={{ fontSize: '2em', fontFamily: 'Poppins' }}>
           All assets supported
         </Header>
         <Image src={'https://img.freepik.com/free-vector/cryptocurrency-landing-page_52683-12388.jpg?size=626&ext=jpg&ga=GA1.2.778645586.1615912189'} alt="fin tech trading platform graphic" />

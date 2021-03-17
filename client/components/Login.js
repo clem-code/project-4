@@ -6,23 +6,13 @@ import { Button, Form, Grid, Header, Message, Segment } from 'semantic-ui-react'
 
 export default function Login({ history }) {
   const [error, updateError] = useState('')
-  const [userList, updateUserList] = useState([])
   const [formData, updateFormData] = useState({
     email: '',
     password: ''
   })
 
-  useEffect(() => {
-    async function getUsers() {
-      const { data } = await axios.get('/api/signup')
-      updateUserList(data)
-    }
-    getUsers()
-  }, [])
-
   function handleChange(event) {
     const { name, value } = event.target
-    console.log(event.target)
     updateFormData({ ...formData, [name]: value })
   }
 
@@ -30,7 +20,6 @@ export default function Login({ history }) {
     event.preventDefault()
     try {
       const { data } = await axios.post('/api/login', formData)
-      console.log(data)
 
       if (localStorage) {
         localStorage.setItem('token', data.token)
@@ -38,7 +27,6 @@ export default function Login({ history }) {
         const payloadAsString = atob(token.split('.')[1])
         const payloadAsObject = JSON.parse(payloadAsString)
         const userID = payloadAsObject.sub
-        console.log('user ID', userID)
       }
       history.push('/')
     } catch (err) {
@@ -50,7 +38,7 @@ export default function Login({ history }) {
     <div className="login">
       <Grid textAlign="center" verticalAlign="middle" style={{ minHeight: 530, paddingTop: 80, paddingBottom: 80 }}>
         <Grid.Column style={{ maxWidth: 500 }}>
-          <Header as="h2" color="teal" textAlign="center">
+          <Header as="h2" color="teal" textAlign="center" style ={{ fontFamily: 'Poppins' }}>
             Log in to your account
           </Header>
           <Form size="large" onSubmit={handleSubmit}>

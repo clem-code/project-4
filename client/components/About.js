@@ -14,7 +14,7 @@ export default function About() {
   return <div className="about-page">
     <Container>
       <Grid.Column>
-        <Header as='h2' textAlign='center'>FAQ</Header>
+        <Header as='h2' textAlign='center' style={{ fontFamily: 'Poppins' }}>FAQ</Header>
         <Accordion fluid styled style={{ margin: 15 }}>
           <Accordion.Title active={faqClicked === 0} onClick={() => handleClick(0)}>
             <Icon name='dropdown' />
@@ -44,7 +44,7 @@ export default function About() {
           </Accordion.Title>
           <Accordion.Content active={faqClicked === 2}>
             <p>
-              This website was created by Vesna, Clement and Tom as part of the General Assembly Software Engineering Immersive course.
+              This website was created by <a href='https://github.com/ZVesna'>Vesna</a>, <a href='https://github.com/clem-code'>Clement</a> and <a href='https://github.com/Thomas-Briody'>Tom</a> as part of the General Assembly Software Engineering Immersive course.
             </p>
           </Accordion.Content>
         </Accordion>
@@ -53,13 +53,13 @@ export default function About() {
     <Grid columns='equal'>
       <Grid.Row stretched>
         <Grid.Column width={10}>
-          <Header as='h2' textAlign='center'>How the Website Works:</Header>
+          <Header style={{ fontFamily: 'Poppins' }} as='h2' textAlign='center'>How the Website Works:</Header>
           <Segment>
             <p>Sign up (it's completely free!) and login.</p>
             <Image src='./images/about1.png' />
           </Segment>
           <Segment>
-            <p>Have a browse on the research page -- search by ticker symbol NOT company name. <br />For example: enter FB to search for Facebook... and BTC to get Bitcoin!</p>
+            <p>Have a browse on the research page. Search by ticker symbol NOT company name. <br />For example: enter FB to search for Facebook...</p>
             <Image src='./images/about2.png' />
           </Segment>
           <Segment>

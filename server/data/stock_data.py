@@ -4,8 +4,7 @@ import requests
 
 
 list_stocks = [
-    Stock(name="mango", symbol="mango", user=[list_users[0], list_users[1]]),
-    Stock(name="floogle", symbol="floogle", user=[list_users[0], list_users[2]]),
+   
 ]
 
 p = requests.get("https://api.coinpaprika.com/v1/coins")

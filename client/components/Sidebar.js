@@ -3,7 +3,6 @@ import { Link, withRouter } from 'react-router-dom'
 import { Icon, Menu, Button } from 'semantic-ui-react'
 
 const SidebarComponent = ({ history }) => {
-  console.log('HISTORY', history)
 
   const [changelogin, updateChangeLogin] = useState(false)
 
@@ -13,7 +12,6 @@ const SidebarComponent = ({ history }) => {
     localStorage.removeItem('token')
     localStorage.removeItem('name')
     updateChangeLogin(!changelogin)
-    console.log('TOKEN>', token)
     history.push('/')
   }
   return <div>
