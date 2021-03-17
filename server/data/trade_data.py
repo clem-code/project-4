@@ -8,7 +8,7 @@ list_trades = [
         total_trade_value=50,
         transaction_type="buy",
         stock_id=1,
-        user_id=2,
+        user_id=1,
         asset_type='stocks'
     ),
     Trade(
@@ -18,7 +18,7 @@ list_trades = [
         total_trade_value=150,
         transaction_type="buy",
         stock_id=1,
-        user_id=2,
+        user_id=1,
         asset_type='stocks'
     ),
     Trade(
@@ -28,7 +28,7 @@ list_trades = [
         total_trade_value=100,
         transaction_type="buy",
         stock_id=2,
-        user_id=2,
+        user_id=1,
         asset_type='stocks'
     ),
 ]
