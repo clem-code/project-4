@@ -73,7 +73,7 @@ export default function Asset({ location }) {
   useEffect(() => {
 
     async function graphFunc() {
-      const { data } = await axios.get(`http://api.marketstack.com/v1/eod?access_key=b423407c1ef7cdb1569a2f04fc263513&symbols=${asset}`)
+      const { data } = await axios.get(`https://api.marketstack.com/v1/eod?access_key=b423407c1ef7cdb1569a2f04fc263513&symbols=${asset}`)
       updateGraphData(data.data.slice(0, 90))
     }
     async function cryptoGraphFunc() {

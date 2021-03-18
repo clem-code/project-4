@@ -79,7 +79,7 @@ export default function Portfolio() {
         if (existingObject) {
           existingObject.stocksHeld = existingObject.stocksHeld + trade.qty_purchased
           existingObject.pricePaid = existingObject.pricePaid + trade.total_trade_value
-          existingObject.currentValue = existingObject.stocksHeld * (cryptoPrices.find(price => price.name === trade.name_of_asset).price) 
+          existingObject.currentValue = existingObject.stocksHeld * (cryptoPrices.find(price => price.name === trade.name_of_asset).price)
           return acc
         } else {
           return [...acc, {
@@ -205,7 +205,7 @@ export default function Portfolio() {
                             <Table.Cell>{trade.name_of_asset}</Table.Cell>
                             <Table.Cell>{trade.transaction_type}</Table.Cell>
                             <Table.Cell textAlign='center'>{trade.qty_purchased}</Table.Cell>
-                            <Table.Cell>£{trade.asset_price.toFixed(2)}</Table.Cell>
+                            <Table.Cell>${trade.asset_price.toFixed(2)}</Table.Cell>
                           </Table.Row>
                         })}
                       </Table.Body>

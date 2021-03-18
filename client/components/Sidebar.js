@@ -20,18 +20,18 @@ const SidebarComponent = ({ history }) => {
         <Icon name='home' />
         Home
       </Menu.Item>
-      <Menu.Item as={Link} to='/portfolio'>
+      {token && <Menu.Item as={Link} to='/portfolio'>
         <Icon name='briefcase' />
         Portfolio
-      </Menu.Item>
+      </Menu.Item>}
       <Menu.Item as={Link} to='/research'>
         <Icon name='magnify' />
         Research
       </Menu.Item>
-      <Menu.Item as={Link} to='/trading'>
+      {token && <Menu.Item as={Link} to='/trading'>
         <Icon name='chart line' />
         Trading
-      </Menu.Item>
+      </Menu.Item>}
       {!token && <Menu.Item as={Link} to='/login'>
         <Icon name='sign in' />
         Login
