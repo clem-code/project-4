@@ -94,7 +94,6 @@ export default function Trading() {
     }
     fetchUser()
   }, [])
-
   useEffect(() => {
     async function cryptoImg(asset) {
       const { data } = await axios.get(`https://api.nomics.com/v1/currencies/ticker?key=88601c6a81a361f8e8413ab689dd66c2&ids=${asset}`)
@@ -172,9 +171,8 @@ export default function Trading() {
     updateShowAlert(false)
   }
   function finalTrade() {
-
-    placeTrade()
     walletAdjust()
+    placeTrade()
     setOpen(false)
     location.reload()
   }
@@ -183,9 +181,9 @@ export default function Trading() {
   async function walletAdjust() {
     let qtyAfterTrade
     if (showSell) {
-      qtyAfterTrade = userWallet + tradeValue
+      qtyAfterTrade = Number(userWallet) + Number(tradeValue)
     } else {
-      qtyAfterTrade = userWallet - tradeValue
+      qtyAfterTrade = Number(userWallet) - Number(tradeValue)
     }
     const walletData = {
       wallet: qtyAfterTrade
@@ -195,6 +193,7 @@ export default function Trading() {
         headers: { Authorization: `Bearer ${token}` }
       })
     } catch (err) {
+      console.log(err)
     }
   }
   async function placeTrade() {
@@ -278,6 +277,9 @@ export default function Trading() {
               </Table.Header>
               <Table.Body>
                 {yourStocks.map((trade, index) => {
+                  if (trade.stocksHeld === 0) {
+                    return null
+                  }
                   return <Table.Row key={index}>
                     <Table.Cell>{trade.name}</Table.Cell>
                     <Table.Cell>{trade.stocksHeld}</Table.Cell>

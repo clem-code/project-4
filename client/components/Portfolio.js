@@ -145,6 +145,9 @@ export default function Portfolio() {
 
                       <Table.Body>
                         {yourStocks && yourStocks.map((trade, index) => {
+                          if(trade.stocksHeld <= 0){
+                            return null
+                          }
                           return <Table.Row key={index}>
                             <Table.Cell>{trade.name}</Table.Cell>
                             <Table.Cell>{trade.stocksHeld}</Table.Cell>
@@ -171,6 +174,9 @@ export default function Portfolio() {
 
                       <Table.Body>
                         {yourCrypto && yourCrypto.map((trade, index) => {
+                           if(trade.stocksHeld <= 0){
+                            return null
+                          }
                           return <Table.Row key={index}>
                             <Table.Cell>{trade.name}</Table.Cell>
                             <Table.Cell>{trade.stocksHeld}</Table.Cell>
