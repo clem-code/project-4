@@ -277,7 +277,7 @@ export default function Trading() {
               </Table.Header>
               <Table.Body>
                 {yourStocks.map((trade, index) => {
-                  if (trade.stocksHeld === 0) {
+                  if (trade.stocksHeld <= 0) {
                     return null
                   }
                   return <Table.Row key={index}>

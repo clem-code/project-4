@@ -152,7 +152,7 @@ export default function Asset({ location }) {
   return <div>
     <div textAlign='center' verticalAlign='middle' style={{ padding: '2em 1em' }}>
       <Image src={assetType !== 'crypto' ? `//logo.clearbit.com/${image}` : image} size={assetType !== 'crypto' ? 'large' : 'tiny'} wrapped />
-      <span><h1 style={{  fontFamily: 'Poppins'  }} textAlign='center' verticalAlign='middle'>{assetName}</h1>
+      <span><h1 style={{ fontFamily: 'Poppins' }} textAlign='center' verticalAlign='middle'>{assetName}</h1>
         <h4 style={{ padding: '0.2em 0.05em', fontFamily: 'Poppins' }}>Share Price (USD): {Number(quote).toFixed(2)}</h4>
         <h4 style={{ padding: '0.2em 0.05em', fontFamily: 'Poppins' }}>Market Capitalization (USD) {assetType === 'crypto' ? location.state.mktCap : Number(mktCap).toFixed(2)}</h4>
       </span>
@@ -243,7 +243,7 @@ export default function Asset({ location }) {
       </Link>
     </div>
     {assetType !== 'crypto' && <div>
-      <Button  color='yellow' onClick={revealFinancials} content="See Financials" />
+      <Button color='yellow' onClick={revealFinancials} content="See Financials" />
     </div>}
     {assetType === 'crypto' && <div>
       <Button animated color='purple' onClick={revealMore}>
