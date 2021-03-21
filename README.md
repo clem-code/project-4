@@ -245,7 +245,7 @@ This was a challenge that replicated itself across almost every page. We overcam
 
 <b>Trading Page</b>
 
-<img align = 'center' src='https://i.imgur.com/w5QLVjO.mp4'>
+<img align = 'center' src='https://i.imgur.com/Twa8don.gif'>
 
 
 This was the fun part! Building a UI that faithfully mimicked a real-life trading platform was actually a really enjoyable challenge. Thankfully, our back-end controllers were working fine so we didn't face too many difficulties on that front. In essence, we had to do 5 things on this page.
@@ -253,7 +253,7 @@ This was the fun part! Building a UI that faithfully mimicked a real-life tradin
 1. Search for assets to buy/sell
 2. Allow the user to input quantities to buy/sell
 3. Test whether this trade was permitted -- that they had sufficient funds, for instance, to make a purchase.
-4. If the trade was permitted then POST a trade model to the backend...
+4. If the trade was permitted then POST a trade model to the back-end...
 5. ...and PUT the User model to adjust the amount in the user's wallet accordingly.
 
 The program to adjust the user's wallet was built on the front-end and generated a revised wallet amount based on the trade and made a PUT request based on that trade. 
