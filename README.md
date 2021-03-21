@@ -56,7 +56,7 @@ Technologies Used:
 
 <br>
 
-<img align = 'center' src='https://imgur.com/qvCCn8D' >
+<img align = 'center' src='https://i.imgur.com/qvCCn8D.png' >
 
 
 ## Building *Folio*
