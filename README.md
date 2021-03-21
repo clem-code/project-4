@@ -68,9 +68,10 @@ The basic idea of building a trading platform was made after a brief group discu
 
 We spent the first day brain-storming and whiteboarding out ideas for how the website would be structured on the frontend and the backend.
 
-<img align = 'center' src='https://imgur.com/a/rDaMsjz' >
+<img align = 'center' src='https://i.imgur.com/ZI5qQ4f.png' >
 
 <i>An early blueprint for our frontend.</i>
+
 <br><br>
 Then we began thinking about how we would structure the development of the project. We decided to do the back-end jointly, by pair-programming. We did this because we knew version control would be a big issue and it was important that we started out knowing that our back-ends were all structured the same way so as to avoid facing problems further down the line. We had a built a back-end together before but this time we were using SQLAlchemy and Flask, not Mongoose and MongoDB, and so even though our backend was pretty simple, working out the relationships between users, assets, and transactions was a bit harder than it was in Project 3!
 
@@ -206,13 +207,12 @@ Having all the components and all the paths visible on one page really helped in
 
 <b>Research and Asset Page</b>
 
-<img align = 'center' src='https://imgur.com/a/ZEfbA1H' >
+<img align = 'center' src='https://i.imgur.com/5pqnCOc.gif' >
 
 When the user makes their account they'll want to see what's on offer before they dive in and make a trade. We planned out a simple research page, with some financial news, some top-line market information, and a search bar where our users could search our back-end for assets. If they searched for BTC (Bitcoin) some basic information appear and this would link to another page--the asset page--where there would be a lot more information available. On the research page they could also 'Favourite' an asset, or if it was already favourited, unfavourite it!
 
-![<img align = 'center' src='https://imgur.com/xUyfQQ2'>
-](https://imgur.com/kqz40Uv)![<img align = 'center' src='https://imgur.com/kqz40Uv'>
-](https://imgur.com/kqz40Uv)
+<img align = 'center' src='https://i.imgur.com/kqz40Uv.png'>
+<img align = 'center' src='https://i.imgur.com/xUyfQQ2.png'>
 
 The problem we discovered was that on the backend some of the assets had the same ticker symbols. 'ETH' referred to Ethereum but also to Ethan Allen Interiors Inc... This meant we needed different controllers to search for cryptos and stocks. This wasn't so bad as we already had made a distinction between cryptos and stocks on our Stock model. However, the third-party APIs we were pulling current data from were all organized differently and all tended to specialize in either crypto or stocks. As we were students using the most basic tier of membership for these APIs (the free one!) we were having to scout around looking for which API we could use to get different data points. At the highest level, when a user wanted to know about crypto we would show them a totally different set of data pulled from a totally different set of APIs versus if they had searched for stocks.
 
@@ -245,9 +245,7 @@ This was a challenge that replicated itself across almost every page. We overcam
 
 <b>Trading Page</b>
 
-<img align = 'center' src='https://imgur.com/a/SOmKTmi'>
-![Imgur Image](https://imgur.com/a/SOmKTmi.jpg)
-![Imgur Image](https://imgur.com/a/SOmKTmi)
+<img align = 'center' src='https://i.imgur.com/w5QLVjO.mp4'>
 
 
 This was the fun part! Building a UI that faithfully mimicked a real-life trading platform was actually a really enjoyable challenge. Thankfully, our back-end controllers were working fine so we didn't face too many difficulties on that front. In essence, we had to do 5 things on this page.
@@ -261,7 +259,7 @@ This was the fun part! Building a UI that faithfully mimicked a real-life tradin
 The program to adjust the user's wallet was built on the front-end and generated a revised wallet amount based on the trade and made a PUT request based on that trade. 
 
 <i>Some basic error handling was integrated into the UI</i>
-<img align = 'center' src='https://imgur.com/a/t5LRkve'>
+<img align = 'center' src='https://i.imgur.com/OuhjNPW.png'>
 
 The trade object was created using this piece of logic: 
 
@@ -327,7 +325,7 @@ useEffect(() => {
 ```
 Needless to say, a lot of quirky bugs were thrown up in this process, but in the end we had the page looking pretty good!
 
-<img align = 'center' src='https://imgur.com/a/P1LVQf0'>
+<img align = 'center' src='https://i.imgur.com/DfUWtJt.png'>
 
 
 <b>Styling</b>
