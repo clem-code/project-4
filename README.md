@@ -21,7 +21,7 @@ Technologies Used:
 <li>HTML5</li>
 <li>JavaScript (ES6)</li>
 <li>SASS</li>
-<li>Semantic React UI</li>
+<li>Semantic UI React</li>
 <li>React</li>
 <li>React-Router</li>
 <li>Webpack</li>
