@@ -361,4 +361,7 @@ We used teal, black, and white as the dominant colours and picked out Poppins fr
 * More data visualizations! There was so much more we could have done but with deadlines looming we have to limit ourselves to a simple line chart on the asset page.
 * We wanted to add more to the research page and make it more responsive and better styled. Again, time constraints meant we had to apply ourselves elsewhere in order to deploy on time.
 
+### _Key Takeaways_
 
+I loved this project. All of us were agreed on the idea and what we wanted to do with it. What made it a challenge was time and so my biggest takeaway was about the importance of time management! 
+On the technical side, I felt this was a real crash-course in APIs. We had so many running and that meant we had to familiarize ourselves with all the documentation and all the intricacies of each. I was also really happy to get some time in with React Viz. It was cool to get a feel for how data visualizations are coded in practice.
